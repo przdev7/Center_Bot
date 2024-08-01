@@ -9,8 +9,8 @@ import validateEnv from "./functions/validateEnv";
 
 class BotClient extends Client {
   private static Instance: BotClient;
-  private cHandler: CommandHandler;
-  private eHandler: EventHandler;
+  private commandHandler: CommandHandler;
+  private eventHandler: EventHandler;
   private processErrorHandler: ProcessErrorHandler;
   private db: Database;
   public userState: Collection<string, string>;
@@ -39,8 +39,8 @@ class BotClient extends Client {
     this.globalCooldown = new Collection();
     this.userCooldown = new Collection();
     this.userState = new Collection();
-    this.cHandler = new CommandHandler(this);
-    this.eHandler = new EventHandler(this);
+    this.commandHandler = new CommandHandler(this);
+    this.eventHandler = new EventHandler(this);
     this.processErrorHandler = new ProcessErrorHandler(this);
   }
 
@@ -57,8 +57,8 @@ class BotClient extends Client {
 
       await Promise.all([
         this.processErrorHandler.registerHandlers(),
-        this.cHandler.handleCommands(),
-        this.eHandler.handleEvents(),
+        this.commandHandler.handleCommands(),
+        this.eventHandler.handleEvents(),
         this.db.connectToDB(),
       ]);
       await this.login(process.env.TOKEN);
