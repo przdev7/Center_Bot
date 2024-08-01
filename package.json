@@ -1,0 +1,58 @@
+{
+  "name": "center_bot",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npm run build && pm2 describe center_bot > /dev/null && pm2 restart center_bot || pm2 start ./dist/src/index.js --name center_bot",
+    "dev": "nodemon ./src/index.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "engines": {
+    "node": ">=20.11.1",
+    "npm": ">=10.2.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.7.0",
+    "@types/lodash": "^4.17.7",
+    "@types/ms": "^0.7.34",
+    "@types/node": "^20.14.10",
+    "@types/rest": "^1.3.34",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "eslint": "^9.7.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-unused-imports": "^4.0.0",
+    "globals": "^15.8.0",
+    "nodemon": "^3.1.2",
+    "prettier": "3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.16.1"
+  },
+  "dependencies": {
+    "ascii-table3": "^0.9.0",
+    "canvas": "^2.11.2",
+    "chalk": "^2.4.1",
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5",
+    "grapheme-splitter": "^1.0.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "mongoose": "^8.4.1",
+    "ms": "^2.1.3",
+    "node-cache": "^5.1.2",
+    "rest": "^2.0.0",
+    "zod": "^3.23.8"
+  },
+  "overrides": {
+    "eslint": "^9.7.0",
+    "@typescript-eslint/eslint-plugin": "^7.16.1"
+  }
+}
