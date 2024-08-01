@@ -13,7 +13,7 @@ class EchoCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const message = interaction.options.getString("message") as string;
+    const message = interaction.options.getString("message", true);
 
     await interaction.reply(` \`${message}\` ~ ${interaction.user.username} `);
   }

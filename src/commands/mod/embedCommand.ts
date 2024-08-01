@@ -24,11 +24,9 @@ class EmbedCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const title = interaction.options.getString("title");
+    const title = interaction.options.getString("title", true);
     const description = interaction.options.getString("description");
     const color = interaction.options.getString("hex-color");
-
-    const embed = new EmbedBuilder();
 
     if (color && !/^#([0-9a-f]{3}){1,2}$/i.test(color)) {
       await interaction.reply({
@@ -37,15 +35,14 @@ class EmbedCommand implements ICommand {
       });
       return;
     }
-
-    if (title) embed.setTitle(title);
+    const embed = new EmbedBuilder().setTitle(title).setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
     if (description) embed.setDescription(description);
     if (color) embed.setColor(color as ColorResolvable);
 
-    embed.setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
     try {
       await interaction.reply({ embeds: [embed] });
     } catch (err) {
+      interaction.reply({ content: "Something went wrong try again later.", ephemeral: true });
       console.log(err);
     }
   }

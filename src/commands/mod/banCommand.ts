@@ -23,10 +23,9 @@ class BanCommand implements ICommand {
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const reason: string | null = interaction.options.getString("reason") || "no reason";
     const user = interaction.options.getMember("user") as GuildMember;
-    const g = interaction.guild;
     console.log(reason);
-    if (user.id === g?.ownerId) {
-      await interaction.reply("You can't ban owner of the guild");
+    if (user.moderatable || user.manageable === false) {
+      await interaction.reply("This user is unmoderatable or unmanagable");
       return;
     }
     if (user.id === interaction.user.id) {
@@ -44,7 +43,7 @@ class BanCommand implements ICommand {
 
       await user.send({ embeds: [dmEmbed] }).catch(() => {});
 
-      g?.bans.create(user, { reason: reason }).then(async () => {
+      user.ban({ reason: reason }).then(async () => {
         const serverEmbed = new EmbedBuilder()
           .setTitle("Banned!")
           .setImage("https://imgur.com/XYQCZCx.png")

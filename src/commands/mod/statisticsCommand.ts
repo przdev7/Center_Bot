@@ -9,7 +9,6 @@ import {
   TextChannel,
 } from "discord.js";
 
-import statistics from "../../functions/statistics";
 import { ICommand } from "../../interfaces/ICommand";
 import statsSchema from "../../models/statsModel";
 import { BOT_VERSION } from "../../utils/constants";
@@ -67,7 +66,6 @@ class StatisticsCommand implements ICommand {
       guild_id: guild.id,
       channel_id: channel.id,
     });
-    statistics();
     const embed = new EmbedBuilder()
       .setTitle("Success")
       .setDescription("Set'uped statistics function")
@@ -89,7 +87,6 @@ class StatisticsCommand implements ICommand {
       return;
     }
     await statsSchema.deleteOne({ guild_id: guildId }).then(async () => {
-      statistics();
       const verifiyEmbed = new EmbedBuilder()
         .setTitle("Success")
         .setDescription("Deleted channel from database.")

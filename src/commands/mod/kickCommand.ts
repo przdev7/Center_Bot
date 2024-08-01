@@ -20,11 +20,10 @@ class KickCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const reason: string | null = interaction.options.getString("reason") || "no reason";
+    const reason: string = interaction.options.getString("reason", false) || "no reason";
     const user = interaction.options.getMember("user") as GuildMember;
-    const g = interaction.guild;
-    if (user.id === g?.ownerId) {
-      await interaction.reply("You can't kick owner of the guild");
+    if (user.moderatable || user.manageable === false) {
+      await interaction.reply("This user is unmoderatable or unmanagable");
       return;
     }
     if (user.id === interaction.user.id) {

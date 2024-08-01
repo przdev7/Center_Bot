@@ -29,9 +29,8 @@ class MuteCommand implements ICommand {
     const user = interaction.options.getMember("user") as GuildMember;
     const time: number | null = interaction.options.getNumber("time");
 
-    const g = interaction.guild;
-    if (user.id === g?.ownerId) {
-      await interaction.reply("You can't mute owner of the guild");
+    if (user.moderatable || user.manageable === false) {
+      await interaction.reply("This user is unmoderatable or unmanagable");
       return;
     }
     if (user.id === interaction.user.id) {

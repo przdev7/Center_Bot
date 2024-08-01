@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, User } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import ms from "ms";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
@@ -14,7 +14,7 @@ class HackCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const { username }: User = interaction.options.getUser("user") || interaction.user;
+    const { username } = interaction.options.getUser("user", true) || interaction.user;
     const reply = await interaction.reply({
       content: `Hacking ${username}`,
       fetchReply: true,
