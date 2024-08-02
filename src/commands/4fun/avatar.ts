@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, User } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import { BOT_VERSION } from "../../utils/constants";
@@ -14,7 +14,7 @@ class AvatarCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const user = (interaction.options.getUser("user") as User) || (interaction.user as User);
+    const user = interaction.options.getUser("user") || interaction.user;
 
     const embedAvatar = new EmbedBuilder()
       .setAuthor({

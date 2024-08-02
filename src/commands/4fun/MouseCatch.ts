@@ -10,7 +10,7 @@ import {
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import { SlashCommandConfig } from "../../builders/SlashCommandConfig";
-import { arrayShufle } from "../../utils/array";
+import _ from "lodash";
 
 class MouseCatchCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -42,7 +42,7 @@ class MouseCatchCommand implements ICommand {
 
     const message = await interaction.reply({
       embeds: [embed],
-      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(arrayShufle(buttons))],
+      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(_.shuffle(buttons))],
       fetchReply: true,
     });
 
@@ -54,7 +54,7 @@ class MouseCatchCommand implements ICommand {
     let moveMouseInterval: NodeJS.Timeout | null = null;
     if (isAdvanced) {
       moveMouseInterval = setInterval(async () => {
-        const randomButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(arrayShufle(buttons));
+        const randomButtons = new ActionRowBuilder<ButtonBuilder>().addComponents(_.shuffle(buttons));
         await interaction.editReply({ components: [randomButtons] });
         if (moveMouseInterval) clearInterval(moveMouseInterval);
       }, 450);
@@ -79,7 +79,7 @@ class MouseCatchCommand implements ICommand {
       } else {
         await i.update({
           embeds: [embed.setTitle("You missed! Try again!").setColor("Red")],
-          components: [new ActionRowBuilder<ButtonBuilder>().addComponents(arrayShufle(buttons))],
+          components: [new ActionRowBuilder<ButtonBuilder>().addComponents(_.shuffle(buttons))],
         });
       }
     });

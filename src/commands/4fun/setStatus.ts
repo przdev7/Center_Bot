@@ -1,9 +1,9 @@
 import Discord, { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { arrayGetRandomElement } from "../../utils/array";
 import { emojiArray } from "../../utils/constants";
 import { SlashCommandConfig } from "../../builders/SlashCommandConfig";
+import _ from "lodash";
 class SetStatus implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   public slashCommandConfig: SlashCommandConfig;
@@ -20,7 +20,7 @@ class SetStatus implements ICommand {
       status: "online",
       activities: [
         {
-          name: `${arrayGetRandomElement(emojiArray)} ${interaction.user.username}`,
+          name: `${_.sample(emojiArray)} ${interaction.user.username}`,
           type: Discord.ActivityType.Listening,
         },
       ],

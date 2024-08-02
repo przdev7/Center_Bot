@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 import { SlashCommandJSON, ICommand } from "../../interfaces/ICommand";
-import { arrayGetRandomElement } from "../../utils/array";
 import { eightBallReply } from "../../utils/constants";
+import _ from "lodash";
 
 class EightBallCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -14,7 +14,7 @@ class EightBallCommand implements ICommand {
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const question = interaction.options.getString("question", true);
-    const reply = arrayGetRandomElement(eightBallReply);
+    const reply = _.sample(eightBallReply);
     await interaction.reply(`- ${question} \n - ${reply}`);
   }
 }

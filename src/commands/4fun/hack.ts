@@ -14,11 +14,15 @@ class HackCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const { username } = interaction.options.getUser("user", true) || interaction.user;
+    const { username } = interaction.options.getUser("user") || interaction.user;
     const reply = await interaction.reply({
       content: `Hacking ${username}`,
       fetchReply: true,
     });
+
+    /* FIXME: @xCzur3kakahecker co w przypadku gdy user usunie wiadomosc
+              zanim sie wykonaja te timeouty? bo jak ja tak zrobilem to wyywalilo bota? napraw to.
+              w zasadzie to jest problem w kazdej komendzie w ktorej jest updateowana wiadomosc ~ toren */
 
     setTimeout(async () => {
       await reply.edit(`Looking for ${username} email and password`);
