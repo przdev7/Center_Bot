@@ -81,7 +81,7 @@ export class ProcessErrorHandler {
       .setTitle(title)
       .setURL(url)
       .setColor(color)
-      .setDescription(`\`\`\`${inspect(error, { depth: 0 })}\`\`\``)
+      .setDescription(`\`\`\`${JSON.stringify(error, null, 4)}\`\`\``)
       .setTimestamp();
 
     try {
