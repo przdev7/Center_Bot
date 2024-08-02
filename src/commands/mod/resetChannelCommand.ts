@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-class NukeCommand implements ICommand {
+class ResetChannelCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
     this.slashCommandJSON = new SlashCommandBuilder()
@@ -25,15 +25,13 @@ class NukeCommand implements ICommand {
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    let chnl = interaction.options.getChannel("channel") as TextChannel | null;
-    if (!chnl || chnl === null) {
-      chnl = interaction.channel as TextChannel;
-    }
-    const channel = chnl;
-    const channelName = channel.name;
-    const channelPermissions = channel.permissionOverwrites.cache;
-    const parentCategory = channel.parent;
-    const channelPosition = channel.position;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain, @typescript-eslint/no-non-null-assertion
+    const channelid = interaction.options.getChannel("channel")?.id || interaction.channel?.id!;
+    const channel = interaction.client.channels.cache.get(channelid) as TextChannel;
+    const channelName = channel?.name;
+    const channelPermissions = channel?.permissionOverwrites.cache;
+    const parentCategory = channel?.parent;
+    const channelPosition = channel?.position;
 
     await channel.delete();
     const newChannel = (await interaction.guild?.channels.create({
@@ -49,11 +47,11 @@ class NukeCommand implements ICommand {
       })),
     })) as TextChannel;
     const embed = new EmbedBuilder()
-      .setTitle("Nuked")
-      .setDescription("Channel Nuked! :fire: :volcano:")
+      .setTitle("Channel reseted")
+      .setDescription("Channel reseted! :fire: :volcano:")
       .setColor("DarkRed")
       .setImage("https://imgur.com/XYQCZCx.png");
     await newChannel.send({ embeds: [embed] });
   }
 }
-export default NukeCommand;
+export default ResetChannelCommand;
