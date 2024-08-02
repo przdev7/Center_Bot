@@ -25,9 +25,7 @@ class ResetChannelCommand implements ICommand {
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain, @typescript-eslint/no-non-null-assertion
-    const channelid = interaction.options.getChannel("channel")?.id || interaction.channel?.id!;
-    const channel = interaction.client.channels.cache.get(channelid) as TextChannel;
+    const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
     const channelName = channel?.name;
     const channelPermissions = channel?.permissionOverwrites.cache;
     const parentCategory = channel?.parent;
