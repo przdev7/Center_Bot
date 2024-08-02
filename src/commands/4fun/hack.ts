@@ -20,48 +20,42 @@ class HackCommand implements ICommand {
       fetchReply: true,
     });
 
-    /* FIXME: @xCzur3kakahecker co w przypadku gdy user usunie wiadomosc
-              zanim sie wykonaja te timeouty? bo jak ja tak zrobilem to wyywalilo bota? napraw to.
-              w zasadzie to jest problem w kazdej komendzie w ktorej jest updateowana wiadomosc ~ toren */
+    const messages = [
+      `Looking for ${username} email and password`,
+      `Found! Email: ${username}@gmail.com \nPassword: 0${username}123!.`,
+      "Looking for accounts.....",
+      "Found steam.....",
+      "Hacking steam account.....",
+      "Hacked steam account !!!!!!",
+      "Saving into database.....",
+      "Selling access....",
+      "Free cash earned",
+    ];
+
+    const delays = [ms("1s"), ms("6s"), ms("9s"), ms("15s"), ms("21s"), ms("28s"), ms("31s"), ms("38s"), ms("41s")];
+
+    let errorOccurred = false;
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < messages.length; i++) {
+      setTimeout(async () => {
+        try {
+          await reply.edit(messages[i]);
+        } catch (e) {
+          if (!errorOccurred) {
+            errorOccurred = true;
+            interaction.channel?.send("You deleted the message or something went wrong.");
+          }
+        }
+      }, delays[i]);
+    }
 
     setTimeout(async () => {
-      await reply.edit(`Looking for ${username} email and password`);
-    }, ms("1s"));
-
-    setTimeout(async () => {
-      await reply.edit(`Found! Email: ${username}@gmail.com \nPassword: 0${username}123!.`);
-    }, ms("6s"));
-
-    setTimeout(async () => {
-      await reply.edit("Looking for accounts.....");
-    }, ms("9s"));
-
-    setTimeout(async () => {
-      await reply.edit("Found steam.....");
-    }, ms("15s"));
-
-    setTimeout(async () => {
-      await reply.edit("Hacking steam account.....");
-    }, ms("21s"));
-
-    setTimeout(async () => {
-      await reply.edit("Hacked steam account !!!!!!");
-    }, ms("28s"));
-
-    setTimeout(async () => {
-      await reply.edit("Saving into database.....");
-    }, ms("31s"));
-
-    setTimeout(async () => {
-      await reply.edit("Selling access....");
-    }, ms("38s"));
-
-    setTimeout(async () => {
-      await reply.edit("Free cash earned");
-    }, ms("41s"));
-
-    setTimeout(async () => {
-      await reply.delete();
+      try {
+        await reply.delete();
+      } catch (error) {
+        console.log(error);
+      }
     }, ms("50s"));
   }
 }
