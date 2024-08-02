@@ -15,11 +15,24 @@ class ServerInfoCommand implements ICommand {
     const gOwner = client.users.cache.get(gOwnerId) as User;
     const serverInfoEmbed = new EmbedBuilder()
       .setTitle("Server Info")
-      .setDescription(
-        `Server Name: **${g?.name}**\nServer Owner: **${gOwner.username}**\nServer ID: **${
-          g?.id
-        }**\nServer Created Time <t:${Math.floor(g.createdTimestamp / 1000)}:R>`,
-      )
+      .setDescription("Info about this server")
+      .addFields([
+        {
+          name: "Server Name:",
+          value: g.name,
+          inline: false,
+        },
+        {
+          name: "Server Owner:",
+          value: gOwner.username,
+          inline: false,
+        },
+        {
+          name: "Server Created Time",
+          value: `<t:${Math.floor(g.createdTimestamp / 1000)}:R>`,
+          inline: false,
+        },
+      ])
       .setColor("White")
       .setThumbnail(g.bannerURL())
       .setImage("https://imgur.com/XYQCZCx.png")

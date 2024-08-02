@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder, User } from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import { BOT_VERSION } from "../../utils/constants";
@@ -15,18 +15,28 @@ class UserInfoCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    let user = interaction.options.getUser("user");
-    if (!user) {
-      user = interaction.user as User;
-    }
+    const user = interaction.options.getUser("user") || interaction.user;
 
     const embed = new EmbedBuilder()
       .setTitle("User Info")
-      .setDescription(
-        `Display Name: **${user.displayName}**\nName: **${user.username}**\nID: **${
-          user.id
-        }**\nDiscord Join Time: <t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
-      )
+      .setDescription("Info about the user.")
+      .addFields([
+        {
+          name: "username:",
+          value: user.username,
+          inline: false,
+        },
+        {
+          name: "user id:",
+          value: user.id,
+          inline: false,
+        },
+        {
+          name: "Joined to discord at",
+          value: `<t:${Math.floor(user.createdTimestamp / 1000)}:R>`,
+          inline: false,
+        },
+      ])
       .setThumbnail(user.displayAvatarURL({}))
       .setColor("White")
       .setImage("https://imgur.com/XYQCZCx.png")
