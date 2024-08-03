@@ -23,13 +23,14 @@ class ResetChannelCommand implements ICommand {
     const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
 
     await channel.delete();
-    const newChannel = channel.clone();
+    const newChannel = await channel.clone();
     const embed = new EmbedBuilder()
       .setTitle("Channel reseted")
       .setDescription("Channel reseted! :fire: :volcano:")
       .setColor("DarkRed")
       .setImage("https://imgur.com/XYQCZCx.png");
-    await (await newChannel).send({ embeds: [embed] });
+    newChannel.send({ embeds: [embed] });
+    interaction.reply({ content: "Channel has been successfully reset", ephemeral: true });
   }
 }
 export default ResetChannelCommand;
