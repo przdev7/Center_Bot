@@ -3,7 +3,6 @@ import {
   ChatInputCommandInteraction,
   EmbedBuilder,
   PermissionFlagsBits,
-  PermissionOverwrites,
   SlashCommandBuilder,
   TextChannel,
 } from "discord.js";
@@ -16,40 +15,21 @@ class ResetChannelCommand implements ICommand {
       .setName("reset-channel")
       .setDescription("resetting a channel.")
       .addChannelOption((option) =>
-        option
-          .setName("channel")
-          .setDescription("Select description to nuke")
-          .addChannelTypes(ChannelType.GuildText)
-          .setRequired(false),
+        option.setName("channel").setDescription("Select channel").addChannelTypes(ChannelType.GuildText),
       )
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
-    const channelName = channel?.name;
-    const channelPermissions = channel?.permissionOverwrites.cache;
-    const parentCategory = channel?.parent;
-    const channelPosition = channel?.position;
 
     await channel.delete();
-    const newChannel = (await interaction.guild?.channels.create({
-      name: channelName,
-      type: channel.type,
-      parent: parentCategory,
-      position: channelPosition,
-      permissionOverwrites: channelPermissions.map((permission: PermissionOverwrites) => ({
-        id: permission.id,
-        type: permission.type,
-        allow: permission.allow.bitfield,
-        deny: permission.deny.bitfield,
-      })),
-    })) as TextChannel;
+    const newChannel = channel.clone();
     const embed = new EmbedBuilder()
       .setTitle("Channel reseted")
       .setDescription("Channel reseted! :fire: :volcano:")
       .setColor("DarkRed")
       .setImage("https://imgur.com/XYQCZCx.png");
-    await newChannel.send({ embeds: [embed] });
+    await (await newChannel).send({ embeds: [embed] });
   }
 }
 export default ResetChannelCommand;
