@@ -1,7 +1,7 @@
 import {
   ChatInputCommandInteraction,
-  ColorResolvable,
   EmbedBuilder,
+  HexColorString,
   PermissionFlagsBits,
   SlashCommandBuilder,
 } from "discord.js";
@@ -37,12 +37,12 @@ class EmbedCommand implements ICommand {
     }
     const embed = new EmbedBuilder().setTitle(title).setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
     if (description) embed.setDescription(description);
-    if (color) embed.setColor(color as ColorResolvable);
+    if (color) embed.setColor(color as HexColorString);
 
     try {
       await interaction.reply({ embeds: [embed] });
     } catch (err) {
-      interaction.reply({ content: "Something went wrong try again later.", ephemeral: true });
+      await interaction.reply({ content: "Something went wrong try again later.", ephemeral: true });
       console.log(err);
     }
   }

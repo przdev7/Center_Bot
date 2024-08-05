@@ -21,9 +21,8 @@ class BanCommand implements ICommand {
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const reason: string | null = interaction.options.getString("reason") || "no reason";
+    const reason: string = interaction.options.getString("reason") || "no reason";
     const user = interaction.options.getMember("user") as GuildMember;
-    console.log(reason);
     if (user.moderatable || user.manageable === false) {
       await interaction.reply("This user is unmoderatable or unmanagable");
       return;

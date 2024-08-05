@@ -82,7 +82,7 @@ class LobbyCommand implements ICommand {
   }
 
   private async welcomeSetup(interaction: ChatInputCommandInteraction): Promise<void> {
-    const channel = interaction.options.getChannel("channel") as TextChannel;
+    const channel = interaction.options.getChannel("channel", true) as TextChannel;
     const role = interaction.options.getRole("role");
     const guild = interaction.guild as Guild;
     const existingData = await welcomeSchema.findOne({ guild_id: guild.id });
@@ -95,28 +95,13 @@ class LobbyCommand implements ICommand {
       await interaction.reply({ embeds: [alreadySetup] });
       return;
     }
-    if (existingData || !channel) {
-      const somenthingWW = new EmbedBuilder()
-        .setTitle("Error")
-        .setDescription("Something went wrong")
-        .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
-      await interaction.reply({ embeds: [somenthingWW] });
-      return;
-    }
-    if (role) {
-      await welcomeSchema.create({
-        guild_id: guild.id,
-        channel_id: channel.id,
-        role_id: role.id,
-      });
-    }
-    if (!role) {
-      await welcomeSchema.create({
-        guild_id: guild.id,
-        channel_id: channel.id,
-      });
-    }
+
+    await welcomeSchema.create({
+      guild_id: guild.id,
+      channel_id: channel.id,
+      role_id: role?.id || undefined,
+    });
+
     const embed = new EmbedBuilder()
       .setTitle("Success")
       .setDescription("Set'uped welcome function")
@@ -125,8 +110,8 @@ class LobbyCommand implements ICommand {
     await interaction.reply({ embeds: [embed] });
   }
   private async welcomeRemove(interaction: ChatInputCommandInteraction): Promise<void> {
-    const guildId = interaction.guild?.id;
-    const existingData = await welcomeSchema.findOne({ guild_id: guildId });
+    const guild = interaction.guild as Guild;
+    const existingData = await welcomeSchema.findOne({ guild_id: guild.id });
     if (!existingData) {
       const ddntSetup = new EmbedBuilder()
         .setTitle("Error")
@@ -137,7 +122,7 @@ class LobbyCommand implements ICommand {
       await interaction.reply({ embeds: [ddntSetup] });
       return;
     }
-    await welcomeSchema.deleteOne({ guild_id: guildId }).then(async () => {
+    await welcomeSchema.deleteOne({ guild_id: guild.id }).then(async () => {
       const verifiyEmbed = new EmbedBuilder()
         .setTitle("Success")
         .setDescription("Deleted channel & role? from database.")
@@ -148,7 +133,7 @@ class LobbyCommand implements ICommand {
     });
   }
   private async leaveSetup(interaction: ChatInputCommandInteraction): Promise<void> {
-    const channel = interaction.options.getChannel("channel") as TextChannel;
+    const channel = interaction.options.getChannel("channel", true) as TextChannel;
     const guild = interaction.guild as Guild;
     const existingData = await removeSchema.findOne({ guild_id: guild.id });
     if (existingData) {
@@ -158,15 +143,6 @@ class LobbyCommand implements ICommand {
         .setColor("Red")
         .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
       await interaction.reply({ embeds: [alreadySetup] });
-      return;
-    }
-    if (existingData || !channel) {
-      const somenthingWW = new EmbedBuilder()
-        .setTitle("Error")
-        .setDescription("Something went wrong")
-        .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
-      await interaction.reply({ embeds: [somenthingWW] });
       return;
     }
     await removeSchema.create({
@@ -181,8 +157,8 @@ class LobbyCommand implements ICommand {
     await interaction.reply({ embeds: [embed] });
   }
   private async leaveRemove(interaction: ChatInputCommandInteraction): Promise<void> {
-    const guildId = interaction.guild?.id;
-    const existingData = await removeSchema.findOne({ guild_id: guildId });
+    const guild = interaction.guild as Guild;
+    const existingData = await removeSchema.findOne({ guild_id: guild.id });
     if (!existingData) {
       const ddntSetup = new EmbedBuilder()
         .setTitle("Error")
@@ -193,7 +169,7 @@ class LobbyCommand implements ICommand {
       await interaction.reply({ embeds: [ddntSetup] });
       return;
     }
-    await removeSchema.deleteOne({ guild_id: guildId }).then(async () => {
+    await removeSchema.deleteOne({ guild_id: guild.id }).then(async () => {
       const verifiyEmbed = new EmbedBuilder()
         .setTitle("Success")
         .setDescription("Deleted channel from database.")
