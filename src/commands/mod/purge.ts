@@ -1,4 +1,4 @@
-import { ChannelType, ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 
@@ -20,14 +20,7 @@ class PurgeCommand implements ICommand {
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     try {
-      const quantity: number | null = interaction.options.getNumber("quantity");
-
-      if (quantity === null) {
-        await interaction.reply({ content: "Invalid quantity provided.", ephemeral: true });
-        return;
-      }
-      if (interaction.channel?.type === ChannelType.DM) return;
-
+      const quantity: number = interaction.options.getNumber("quantity", true);
       const fetchedMessages = await interaction.channel?.messages.fetch({
         limit: quantity,
         cache: false,
@@ -37,7 +30,8 @@ class PurgeCommand implements ICommand {
         await interaction.reply({ content: "Can't find any messages.", ephemeral: true });
         return;
       }
-      await interaction.channel?.bulkDelete(quantity, true);
+      const channel = interaction.channel as TextChannel;
+      await channel.bulkDelete(quantity, true);
 
       await interaction.reply({
         // eslint-disable-next-line max-len

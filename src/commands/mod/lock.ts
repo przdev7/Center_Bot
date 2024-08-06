@@ -1,6 +1,7 @@
 import Discord, {
   ChatInputCommandInteraction,
   EmbedBuilder,
+  Guild,
   PermissionFlagsBits,
   SlashCommandBuilder,
   TextChannel,
@@ -24,11 +25,8 @@ class LockCommand implements ICommand {
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels);
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const { guild } = interaction;
+    const guild = interaction.guild as Guild;
     const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
-    if (!guild) {
-      throw new Error("Guild is null or undefined");
-    }
     const embed = new EmbedBuilder()
       .setImage("https://imgur.com/XYQCZCx.png")
       .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
@@ -38,7 +36,7 @@ class LockCommand implements ICommand {
       });
       return;
     }
-    await channel.permissionOverwrites.edit(guild?.id, {
+    await channel.permissionOverwrites.edit(guild.id, {
       SendMessages: false,
     });
 
