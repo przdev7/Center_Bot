@@ -2,14 +2,13 @@ import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, 
 
 import BotClient from "../../client";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-const client = BotClient.getInstance();
 import { BOT_VERSION } from "../../utils/constants";
 class ServerInfoCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
     this.slashCommandJSON = new SlashCommandBuilder().setName("serverinfo").setDescription("Sending info about user");
   }
-  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
     const g = interaction.guild as Guild;
     const gOwnerId: string = g.ownerId;
     const gOwner = client.users.cache.get(gOwnerId) as User;

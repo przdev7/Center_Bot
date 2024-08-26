@@ -118,19 +118,19 @@ class TicketCommand implements ICommand {
         break;
       }
       case "cancel": {
-        await this.cancel(interaction);
+        await this.cancel(interaction, client);
         break;
       }
       case "add": {
-        await this.add(interaction);
+        await this.add(interaction, client);
         break;
       }
       case "remove": {
-        await this.delete(interaction);
+        await this.delete(interaction, client);
         break;
       }
       case "send": {
-        await this.send(interaction);
+        await this.send(interaction, client);
         break;
       }
       default: {
@@ -156,7 +156,7 @@ class TicketCommand implements ICommand {
       await interaction.reply({ embeds: [inCreatingTicket], ephemeral: true });
     }
 
-    BotClient.getInstance().userState.set(interaction.user.id, this.slashCommandJSON.name);
+    client.userState.set(interaction.user.id, this.slashCommandJSON.name);
 
     const timeout = new EmbedBuilder()
       .setTitle("Error")
@@ -181,8 +181,8 @@ class TicketCommand implements ICommand {
       await interaction.editReply({ embeds: [timeout] });
     }, ms("5m"));
   }
-  private async cancel(interaction: ChatInputCommandInteraction): Promise<void> {
-    const state = BotClient.getInstance().userState;
+  private async cancel(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
+    const state = client.userState;
 
     if (state.get(interaction.user.id) !== this.slashCommandJSON.name) {
       const errorCanceling = new EmbedBuilder()
@@ -206,13 +206,11 @@ class TicketCommand implements ICommand {
     state.delete(interaction.user.id);
     await interaction.reply({ embeds: [successCanceling] });
   }
-  private async add(interaction: ChatInputCommandInteraction): Promise<void> {
-    const cName = interaction.options.getString("category-name");
-    const cDesc = interaction.options.getString("category-description");
+  private async add(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
+    const cName = interaction.options.getString("category-name", true);
+    const cDesc = interaction.options.getString("category-description", true);
 
-    if (!cDesc || !cName) return;
-
-    const state = BotClient.getInstance().userState;
+    const state = client.userState;
 
     if (state.get(interaction.user.id) !== this.slashCommandJSON.name) {
       const errorCanceling = new EmbedBuilder()
@@ -249,13 +247,13 @@ class TicketCommand implements ICommand {
 
     await interaction.reply({ embeds: [successAdd], ephemeral: true });
   }
-  private async send(interaction: ChatInputCommandInteraction): Promise<void> {
+  private async send(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
     const color: ColorResolvable = interaction.options.getString("color", true) as ColorResolvable;
-    const state = BotClient.getInstance().userState;
-    const eTitle = interaction.options.getString("title");
-    const eDesc = interaction.options.getString("description");
-    const ticketChannel = interaction.options.getChannel("channel") as TextChannel;
-    const ticketCategory = interaction.options.getChannel("category") as CategoryChannel;
+    const state = client.userState;
+    const eTitle = interaction.options.getString("title", true);
+    const eDesc = interaction.options.getString("description", true);
+    const ticketChannel = interaction.options.getChannel("channel", true) as TextChannel;
+    const ticketCategory = interaction.options.getChannel("category", true) as CategoryChannel;
     const role = interaction.options.getRole("role") as Role;
     if (state.get(interaction.user.id) !== this.slashCommandJSON.name) {
       const errorCanceling = new EmbedBuilder()
@@ -315,7 +313,7 @@ class TicketCommand implements ICommand {
         color: color,
       },
       message_id: message.id,
-      role_id: role?.id || "not set'uped",
+      role_id: role?.id || undefined,
       channel_id: ticketChannel.id,
       category_id: ticketCategory.id,
       categories: this.category,
@@ -326,9 +324,9 @@ class TicketCommand implements ICommand {
     await interaction.reply({ embeds: [admnEmbed] });
   }
 
-  private async delete(interaction: ChatInputCommandInteraction): Promise<void> {
+  private async delete(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
     const categoryName = interaction.options.getString("category-name");
-    const state = BotClient.getInstance().userState;
+    const state = client.userState;
 
     if (state.get(interaction.user.id) !== this.slashCommandJSON.name) {
       const errorCanceling = new EmbedBuilder()

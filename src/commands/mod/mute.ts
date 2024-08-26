@@ -29,11 +29,11 @@ class MuteCommand implements ICommand {
     const uTime: string = interaction.options.getString("time", true);
 
     if (!user.moderatable || !user.manageable) {
-      await interaction.reply("This user is unmoderatable or unmanagable");
+      await interaction.reply({ content: "This user is unmoderatable or unmanagable", ephemeral: true });
       return;
     }
     if (user.id === interaction.user.id) {
-      await interaction.reply("You can't mute yourself");
+      await interaction.reply({ content: "You can't mute yourself", ephemeral: true });
       return;
     }
     try {

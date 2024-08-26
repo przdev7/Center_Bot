@@ -23,11 +23,11 @@ class KickCommand implements ICommand {
     const reason: string = interaction.options.getString("reason", false) || "no reason";
     const user = interaction.options.getMember("user") as GuildMember;
     if (user.moderatable || user.manageable === false) {
-      await interaction.reply("This user is unmoderatable or unmanagable");
+      await interaction.reply({ content: "This user is unmoderatable or unmanagable", ephemeral: true });
       return;
     }
     if (user.id === interaction.user.id) {
-      await interaction.reply("You can't kick yourself");
+      await interaction.reply({ content: "You can't kick yourself", ephemeral: true });
       return;
     }
     try {

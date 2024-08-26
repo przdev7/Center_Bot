@@ -13,7 +13,7 @@ import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import verifySchema from "../../models/verifyModel";
 import { BOT_VERSION } from "../../utils/constants";
 
-interface Idata {
+interface data {
   GuildId: string;
   RoleId: string;
   messageId: string;
@@ -22,7 +22,7 @@ interface Idata {
 
 class VerifyCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
-  private obj: Idata | null;
+  private obj: data | null;
   constructor() {
     this.slashCommandJSON = new SlashCommandBuilder()
       .setName("verify")
@@ -77,7 +77,7 @@ class VerifyCommand implements ICommand {
       await interaction.reply({ embeds: [somenthingWW] });
       return;
     }
-    const data: Idata = {
+    const data: data = {
       GuildId: guild.id,
       RoleId: verifiedRole.id,
       messageId: "",
@@ -125,7 +125,7 @@ class VerifyCommand implements ICommand {
       .setColor("Green")
       .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
 
-    const channel = interaction.guild?.channels.cache.get(this.obj.ChannelId || "") as TextChannel;
+    const channel = interaction.guild?.channels.cache.get(this.obj.ChannelId) as TextChannel;
 
     const verifyMessage = await channel.send({ embeds: [verifiyEmbed], components: [row] });
 
