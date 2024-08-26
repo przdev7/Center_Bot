@@ -46,7 +46,7 @@ class SuggestCommand implements ICommand {
     }
   }
   private async setup(interaction: ChatInputCommandInteraction): Promise<void> {
-    const channel = interaction.options.getChannel("channel") as TextChannel;
+    const channel = interaction.options.getChannel("channel", true) as TextChannel;
     const existingData = await suggestSchema.findOne({ guild_id: interaction.guild?.id });
     if (existingData) {
       const alreadySetup = new EmbedBuilder()
@@ -55,15 +55,6 @@ class SuggestCommand implements ICommand {
         .setColor("Red")
         .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
       await interaction.reply({ embeds: [alreadySetup] });
-      return;
-    }
-    if (existingData || !channel) {
-      const somenthingWW = new EmbedBuilder()
-        .setTitle("Error")
-        .setDescription("Something went wrong")
-        .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
-      await interaction.reply({ embeds: [somenthingWW] });
       return;
     }
     await suggestSchema.create({

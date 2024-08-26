@@ -41,7 +41,7 @@ class StatisticsCommand implements ICommand {
     return;
   }
   private async setup(interaction: ChatInputCommandInteraction): Promise<void> {
-    const channel = interaction.options.getChannel("channel") as TextChannel;
+    const channel = interaction.options.getChannel("channel", true) as TextChannel;
     const guild = interaction.guild as Guild;
     const existingData = await statsSchema.findOne({ guild_id: guild.id });
     if (existingData) {
@@ -51,15 +51,6 @@ class StatisticsCommand implements ICommand {
         .setColor("Red")
         .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
       await interaction.reply({ embeds: [alreadySetup] });
-      return;
-    }
-    if (existingData || !channel) {
-      const somenthingWW = new EmbedBuilder()
-        .setTitle("Error")
-        .setDescription("Something went wrong")
-        .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
-      await interaction.reply({ embeds: [somenthingWW] });
       return;
     }
     await statsSchema.create({

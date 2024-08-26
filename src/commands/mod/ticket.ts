@@ -110,11 +110,11 @@ class TicketCommand implements ICommand {
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
   }
   private category: TicketCategory[] = [];
-  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
     const option = interaction.options.getSubcommand();
     switch (option) {
       case "create": {
-        await this.create(interaction);
+        await this.create(interaction, client);
         break;
       }
       case "cancel": {
@@ -138,8 +138,8 @@ class TicketCommand implements ICommand {
       }
     }
   }
-  private async create(interaction: ChatInputCommandInteraction): Promise<void> {
-    const state = BotClient.getInstance().userState;
+  private async create(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
+    const state = client.userState;
 
     const now = Date.now();
     const target = new Date(now + ms("5m")).getTime();
