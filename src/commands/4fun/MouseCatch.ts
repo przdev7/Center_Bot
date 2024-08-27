@@ -22,7 +22,7 @@ class MouseCatchCommand implements ICommand {
       .addSubcommand((command) => command.setName("normal-mode").setDescription("Normal mode of the command"))
       .addSubcommand((command) => command.setName("advanced-mode").setDescription("Advanced mode of the command"))
       .setDescription("Test your reflexes by catching the mouse.");
-    this.slashCommandConfig = new SlashCommandConfig().setGlobalCooldown(10000);
+    this.slashCommandConfig = new SlashCommandConfig();
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {

@@ -16,7 +16,7 @@ import { IEvent } from "../../interfaces/IEvent";
 class ReactionRolesEvent implements IEvent {
   name: keyof ClientEvents = "interactionCreate";
   once = false;
-  async execute(interaction: Interaction, client: BotClient): Promise<void> {
+  async execute(client: BotClient, interaction: Interaction): Promise<void> {
     if (!interaction.isButton()) return;
     if (interaction.customId.split("-")[0] !== "rr") return;
     const roleId = interaction.customId.split("-")[1];

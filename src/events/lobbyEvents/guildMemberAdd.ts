@@ -9,7 +9,7 @@ class GuildMemberAdd implements IEvent {
   name: keyof ClientEvents = "guildMemberAdd";
   once = false;
 
-  async execute(member: GuildMember): Promise<void> {
+  async execute(client: BotClient, member: GuildMember): Promise<void> {
     const guild = member.guild as Guild;
     const guildId: string = guild?.id;
     try {

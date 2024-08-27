@@ -17,13 +17,33 @@ class MuteCommand implements ICommand {
     this.slashCommandJSON = new SlashCommandBuilder()
       .setName("mute")
       .setDescription("Muting a user from server.")
-      .addUserOption((option) => option.setName("user").setDescription("Choose user to mute").setRequired(true))
-      .addStringOption((option) => option.setName("time").setDescription("Type a time for mute.").setRequired(true))
-      .addStringOption((option) => option.setName("reason").setDescription("Type reason for mute.").setRequired(false))
+      .addSubcommand((command) =>
+        command
+          .setName("mute")
+          .setDescription("Muting a user from server.")
+          .addUserOption((option) => option.setName("user").setDescription("Choose user to mute").setRequired(true))
+          .addStringOption((option) => option.setName("time").setDescription("Type a time for mute.").setRequired(true))
+          .addStringOption((option) =>
+            option.setName("reason").setDescription("Type reason for mute.").setRequired(false),
+          ),
+      )
+      .addSubcommand((command) =>
+        command
+          .setName("unmute")
+          .setDescription("Unmuting a user from server.")
+          .addUserOption((option) => option.setName("user").setDescription("Choose user to unmute").setRequired(true)),
+      )
       .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers);
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+    const subCommand = interaction.options.getSubcommand();
+
+    if (subCommand === "mute") await this.mute(interaction);
+    if (subCommand === "unmute") await this.unmute(interaction);
+    return;
+  }
+  private async mute(interaction: ChatInputCommandInteraction): Promise<void> {
     const reason: string = interaction.options.getString("reason") || "no reason";
     const user = interaction.options.getMember("user") as GuildMember;
     const uTime: string = interaction.options.getString("time", true);
@@ -61,6 +81,17 @@ class MuteCommand implements ICommand {
       });
     } catch (error) {
       await interaction.reply("Bot don't have permissions to mute this member or something went wrong.");
+    }
+  }
+  private async unmute(interaction: ChatInputCommandInteraction): Promise<void> {
+    const user = interaction.options.getMember("user") as GuildMember;
+    if (user.timeout.length === 0) {
+      await interaction.reply({ content: "Member don't have timeout", ephemeral: true });
+    }
+    try {
+      user.timeout(0);
+    } catch (error) {
+      await interaction.reply({ ephemeral: true, content: "Something went wrong" });
     }
   }
 }

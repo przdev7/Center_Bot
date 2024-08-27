@@ -11,7 +11,7 @@ import Discord, {
   ModalSubmitInteraction,
   TextInputBuilder,
 } from "discord.js";
-
+import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import verifySchema from "../../models/verifyModel";
 import welcomeSchema from "../../models/welcomeModel";
@@ -20,7 +20,7 @@ class VerificationEvent implements IEvent {
   once = false;
 
   private codes: Map<string, string> = new Map();
-  async execute(interaction: Interaction): Promise<void> {
+  async execute(client: BotClient, interaction: Interaction): Promise<void> {
     if (interaction.isButton() && interaction.customId === "verify_modalOpen")
       this.handleModalVerification(interaction);
 

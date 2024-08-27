@@ -8,7 +8,7 @@ import {
   TextChannel,
   User,
 } from "discord.js";
-
+import BotClient from "../../client";
 import formatResults from "../../functions/formatResults";
 import { IEvent } from "../../interfaces/IEvent";
 import suggestSchema from "../../models/suggestModel";
@@ -17,7 +17,7 @@ import suggestionStatus from "../../utils/suggestionStatus";
 class SuggestCreateEvent implements IEvent {
   name: keyof ClientEvents = "messageCreate";
   once = false;
-  async execute(message: Message): Promise<void> {
+  async execute(client: BotClient, message: Message): Promise<void> {
     try {
       const suggestionsData = await suggestSchema.findOne({ guild_id: message.guild?.id });
       if (!suggestionsData || !suggestionsData.channel_id) return;

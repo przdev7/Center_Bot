@@ -9,7 +9,7 @@ class GuildMemberRemove implements IEvent {
   name: keyof ClientEvents = "guildMemberRemove";
   once = false;
 
-  async execute(member: GuildMember): Promise<void> {
+  async execute(client: BotClient, member: GuildMember): Promise<void> {
     const guild = member.guild as Guild;
     const guildId: string = guild?.id;
     try {
@@ -17,8 +17,10 @@ class GuildMemberRemove implements IEvent {
       if (!data || !data.channel_id) {
         return;
       }
-      const client = BotClient.getInstance();
       const channel = client.channels.cache.get(data?.channel_id) as TextChannel;
+      if (!channel) {
+        return;
+      }
       const canvas = Canvas.createCanvas(700, 250);
       const context = canvas.getContext("2d");
 
@@ -54,9 +56,6 @@ class GuildMemberRemove implements IEvent {
 
       const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "welcome-image.png" });
 
-      if (!channel) {
-        return;
-      }
       const embed = new EmbedBuilder()
         .setTitle("👋 A user leaved Server!")
         .setColor(Colors.Red)

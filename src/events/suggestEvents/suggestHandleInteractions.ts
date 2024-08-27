@@ -1,5 +1,5 @@
 import { ButtonInteraction, ClientEvents, Embed, EmbedBuilder, Interaction, Message } from "discord.js";
-
+import BotClient from "../../client";
 import formatResults from "../../functions/formatResults";
 import { IEvent } from "../../interfaces/IEvent";
 import suggestSchema, { SuggestArray } from "../../models/suggestModel";
@@ -8,7 +8,7 @@ import suggestionStatus from "../../utils/suggestionStatus";
 class SuggestHandleInteractions implements IEvent {
   name: keyof ClientEvents = "interactionCreate";
   once = false;
-  async execute(interaction: Interaction): Promise<void> {
+  async execute(client: BotClient, interaction: Interaction): Promise<void> {
     if (!interaction.isButton()) return;
     if (interaction.customId.split("_")[0] !== "suggestion") return;
 

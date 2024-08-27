@@ -10,7 +10,7 @@ import {
   PermissionFlagsBits,
   TextChannel,
 } from "discord.js";
-
+import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import ticketModel from "../../models/ticketModel";
 import { BOT_VERSION } from "../../utils/constants";
@@ -19,7 +19,7 @@ class ticketManagementPanel implements IEvent {
   once = false;
 
   private hasSendedReq = false;
-  async execute(interaction: Interaction): Promise<void> {
+  async execute(client: BotClient, interaction: Interaction): Promise<void> {
     if (!interaction.isButton()) return;
     if (interaction.customId.split("_")[0] !== "ticket") return;
     const ticketModerateRoleId = await ticketModel.findOne({ guild_id: interaction.guild?.id });

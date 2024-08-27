@@ -14,7 +14,7 @@ class InteractionCreateEvent implements IEvent {
   private cooldowns: NodeCache = new NodeCache();
   private cache: NodeCache = new NodeCache();
 
-  async execute(interaction: Interaction, client: BotClient): Promise<void> {
+  async execute(client: BotClient, interaction: Interaction): Promise<void> {
     switch (true) {
       case interaction instanceof ChatInputCommandInteraction:
         await this.handleChatInputCommand(interaction, client);

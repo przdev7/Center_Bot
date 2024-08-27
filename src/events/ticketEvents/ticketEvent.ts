@@ -8,14 +8,14 @@ import {
   PermissionsBitField,
   StringSelectMenuInteraction,
 } from "discord.js";
-
+import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import ticketSchema from "../../models/ticketModel";
 import { BOT_VERSION } from "../../utils/constants";
 class InteractionCreateEvent implements IEvent {
   name: keyof ClientEvents = "interactionCreate";
   once = false;
-  async execute(interaction: Interaction): Promise<void> {
+  async execute(client: BotClient, interaction: Interaction): Promise<void> {
     if (interaction.isStringSelectMenu() && interaction.customId === "ticket_selectmenu")
       await this.handleTicketMenu(interaction);
     return;

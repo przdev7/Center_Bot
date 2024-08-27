@@ -12,6 +12,7 @@ class EventHandler {
     this.events = [];
   }
   public async handleEvents(): Promise<void> {
+    const client = this.instance;
     try {
       const eventFolders: string[] = fs.readdirSync(path.join(__dirname, "../events"));
 
@@ -24,9 +25,11 @@ class EventHandler {
           const event: IEvent = new eventModule.default();
           this.events.push(event);
 
-          event.once
-            ? this.instance.once(event.name, (...args) => event.execute(...args, this.instance))
-            : this.instance.on(event.name, (...args) => event.execute(...args, this.instance));
+          if (event.once) {
+            this.instance.once(event.name, (...args) => event.execute(client, ...args, this.instance));
+          } else {
+            this.instance.on(event.name, (...args) => event.execute(client, ...args, this.instance));
+          }
         }
       }
       console.log(`[CL] Successfully registered ${this.events.length} global events`);

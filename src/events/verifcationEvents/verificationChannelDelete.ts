@@ -1,12 +1,12 @@
 import { ClientEvents, Interaction } from "discord.js";
-
+import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import verifySchema from "../../models/verifyModel";
 class VerificationChannelDelete implements IEvent {
   name: keyof ClientEvents = "channelDelete";
   once = false;
 
-  async execute(channel: Interaction): Promise<void> {
+  async execute(client: BotClient, channel: Interaction): Promise<void> {
     const messagesIds = await verifySchema.find({ guild_id: channel.guild?.id });
 
     for (const data of messagesIds) {
