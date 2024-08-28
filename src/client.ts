@@ -1,5 +1,5 @@
 import "dotenv/config";
-import Discord, { Client, Collection, Partials } from "discord.js";
+import { Client, Collection, Partials, GatewayIntentBits, ActivityType } from "discord.js";
 import CommandHandler from "./handlers/command";
 import EventHandler from "./handlers/event";
 import { ICommand } from "./interfaces/ICommand";
@@ -21,17 +21,17 @@ class BotClient extends Client {
   private constructor() {
     super({
       intents: [
-        Discord.GatewayIntentBits.Guilds,
-        Discord.GatewayIntentBits.GuildMembers,
-        Discord.GatewayIntentBits.DirectMessages,
-        Discord.GatewayIntentBits.MessageContent,
-        Discord.GatewayIntentBits.GuildMessages,
-        Discord.GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildEmojisAndStickers,
       ],
       partials: [Partials.User, Partials.Message, Partials.Reaction, Partials.GuildMember],
       presence: {
         status: "online",
-        activities: [{ name: "👀 Use /set-status", type: Discord.ActivityType.Listening }],
+        activities: [{ name: "👀 Use /set-status", type: ActivityType.Listening }],
       },
     });
     this.db = Database.getInstance();

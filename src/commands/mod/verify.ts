@@ -1,9 +1,10 @@
-import Discord, {
+import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   ChatInputCommandInteraction,
   EmbedBuilder,
+  Guild,
   PermissionFlagsBits,
   SlashCommandBuilder,
   TextChannel,
@@ -53,9 +54,9 @@ class VerifyCommand implements ICommand {
   }
 
   private async setup(interaction: ChatInputCommandInteraction): Promise<void> {
-    const verifiedRole = interaction.options.getRole("role-verify") as Discord.Role;
-    const channel = interaction.options.getChannel("channel") as Discord.Channel;
-    const guild = interaction.guild as Discord.Guild;
+    const verifiedRole = interaction.options.getRole("role-verify", true);
+    const channel = interaction.options.getChannel("channel", true);
+    const guild = interaction.guild as Guild;
     const existingData = await verifySchema.findOne({ guild_id: guild.id });
     if (existingData) {
       const alreadySetup = new EmbedBuilder()
@@ -65,16 +66,6 @@ class VerifyCommand implements ICommand {
         .setImage("https://imgur.com/Uv62jPu.png")
         .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
       await interaction.reply({ embeds: [alreadySetup] });
-      return;
-    }
-    if (existingData || !verifiedRole) {
-      const somenthingWW = new EmbedBuilder()
-        .setTitle("Error")
-        .setDescription("Something went wrong")
-        .setImage("https://imgur.com/Uv62jPu.png")
-        .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
-      await interaction.reply({ embeds: [somenthingWW] });
       return;
     }
     const data: data = {

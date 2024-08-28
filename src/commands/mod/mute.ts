@@ -36,7 +36,7 @@ class MuteCommand implements ICommand {
 
     try {
       const [time, unit] = uTime.split(/(\d+)/).filter((i) => i);
-      console.log(!this.allowedTimeUnits.includes(unit.toLocaleLowerCase()));
+      console.log(!this.allowedTimeUnits.includes(unit.toLocaleLowerCase(interaction.locale)));
       if (!parseFloat(time)) {
         await interaction.reply({ content: "value is NaN", ephemeral: true });
         return;
@@ -45,14 +45,14 @@ class MuteCommand implements ICommand {
         await interaction.reply({ content: "Invalid time max = 28days", ephemeral: true });
       }
 
-      if (!this.allowedTimeUnits.includes(unit.toLocaleLowerCase())) {
+      if (!this.allowedTimeUnits.includes(unit.toLocaleLowerCase(interaction.locale))) {
         await interaction.reply({
           content: "Invalid unit, you can use only; s (seconds), m (minutes), d (days)",
           ephemeral: true,
         });
         return;
       }
-      user.timeout(ms(parseFloat(time) + unit.toLocaleLowerCase()), reason).then(async () => {
+      user.timeout(ms(parseFloat(time) + unit.toLocaleLowerCase(interaction.locale)), reason).then(async () => {
         const embed = new EmbedBuilder()
           .setTitle("Muted!")
           .setDescription(`You muted: <@${user.id}> For: ${reason}`)
