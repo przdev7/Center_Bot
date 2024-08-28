@@ -24,9 +24,9 @@ class HelpCommand implements ICommand {
     this.index = 0;
   }
 
-  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
     this.chunk = [];
-    const { commands } = BotClient.getInstance();
+    const { commands } = client;
     await interaction.deferReply();
     const fields = [] as EmbedField[];
 

@@ -6,44 +6,21 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import ms from "ms";
-
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import { BOT_VERSION } from "../../utils/constants";
-
 class MuteCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   private allowedTimeUnits: string[] = ["s", "m", "d"];
   constructor() {
     this.slashCommandJSON = new SlashCommandBuilder()
       .setName("mute")
-      .setDescription("Muting a user from server.")
-      .addSubcommand((command) =>
-        command
-          .setName("mute")
-          .setDescription("Muting a user from server.")
-          .addUserOption((option) => option.setName("user").setDescription("Choose user to mute").setRequired(true))
-          .addStringOption((option) => option.setName("time").setDescription("Type a time for mute.").setRequired(true))
-          .addStringOption((option) =>
-            option.setName("reason").setDescription("Type reason for mute.").setRequired(false),
-          ),
-      )
-      .addSubcommand((command) =>
-        command
-          .setName("unmute")
-          .setDescription("Unmuting a user from server.")
-          .addUserOption((option) => option.setName("user").setDescription("Choose user to unmute").setRequired(true)),
-      )
+      .setDescription("Muting a user from server. if you want to unmute literally set timeout to 0")
+      .addUserOption((option) => option.setName("user").setDescription("Choose user to mute").setRequired(true))
+      .addStringOption((option) => option.setName("time").setDescription("Type a time for mute.").setRequired(true))
+      .addStringOption((option) => option.setName("reason").setDescription("Type reason for mute.").setRequired(false))
       .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers);
   }
-
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const subCommand = interaction.options.getSubcommand();
-
-    if (subCommand === "mute") await this.mute(interaction);
-    if (subCommand === "unmute") await this.unmute(interaction);
-    return;
-  }
-  private async mute(interaction: ChatInputCommandInteraction): Promise<void> {
     const reason: string = interaction.options.getString("reason") || "no reason";
     const user = interaction.options.getMember("user") as GuildMember;
     const uTime: string = interaction.options.getString("time", true);
@@ -56,21 +33,26 @@ class MuteCommand implements ICommand {
       await interaction.reply({ content: "You can't mute yourself", ephemeral: true });
       return;
     }
-    try {
-      const [time, unit] = uTime.split(/\D/);
 
-      if (!this.allowedTimeUnits.includes(unit)) {
+    try {
+      const [time, unit] = uTime.split(/(\d+)/).filter((i) => i);
+      console.log(!this.allowedTimeUnits.includes(unit.toLocaleLowerCase()));
+      if (!parseFloat(time)) {
+        await interaction.reply({ content: "value is NaN", ephemeral: true });
+        return;
+      }
+      if (parseFloat(time) > 28) {
+        await interaction.reply({ content: "Invalid time max = 28days", ephemeral: true });
+      }
+
+      if (!this.allowedTimeUnits.includes(unit.toLocaleLowerCase())) {
         await interaction.reply({
           content: "Invalid unit, you can use only; s (seconds), m (minutes), d (days)",
           ephemeral: true,
         });
         return;
       }
-      if (parseInt(time) > ms("30d")) {
-        await interaction.reply({ content: "Invalid time max = 30days", ephemeral: true });
-      }
-
-      user.timeout(ms(time + unit), reason).then(async () => {
+      user.timeout(ms(parseFloat(time) + unit.toLocaleLowerCase()), reason).then(async () => {
         const embed = new EmbedBuilder()
           .setTitle("Muted!")
           .setDescription(`You muted: <@${user.id}> For: ${reason}`)
@@ -83,17 +65,5 @@ class MuteCommand implements ICommand {
       await interaction.reply("Bot don't have permissions to mute this member or something went wrong.");
     }
   }
-  private async unmute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const user = interaction.options.getMember("user") as GuildMember;
-    if (user.timeout.length === 0) {
-      await interaction.reply({ content: "Member don't have timeout", ephemeral: true });
-    }
-    try {
-      user.timeout(0);
-    } catch (error) {
-      await interaction.reply({ ephemeral: true, content: "Something went wrong" });
-    }
-  }
 }
-
 export default MuteCommand;

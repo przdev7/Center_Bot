@@ -12,7 +12,6 @@ class EventHandler {
     this.events = [];
   }
   public async handleEvents(): Promise<void> {
-    const client = this.instance;
     try {
       const eventFolders: string[] = fs.readdirSync(path.join(__dirname, "../events"));
 
@@ -26,9 +25,9 @@ class EventHandler {
           this.events.push(event);
 
           if (event.once) {
-            this.instance.once(event.name, (...args) => event.execute(client, ...args, this.instance));
+            this.instance.once(event.name, (...args) => event.execute(this.instance, ...args));
           } else {
-            this.instance.on(event.name, (...args) => event.execute(client, ...args, this.instance));
+            this.instance.on(event.name, (...args) => event.execute(this.instance, ...args));
           }
         }
       }

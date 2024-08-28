@@ -17,7 +17,6 @@ class GuildMemberAdd implements IEvent {
       if (!data || !data.channel_id) {
         return;
       }
-      const client = BotClient.getInstance();
       const channel = client.channels.cache.get(data?.channel_id);
       const role = data.role_id;
 
