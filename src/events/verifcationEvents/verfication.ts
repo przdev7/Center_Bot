@@ -21,11 +21,10 @@ class VerificationEvent implements IEvent {
 
   private codes: Map<string, string> = new Map();
   async execute(client: BotClient, interaction: Interaction): Promise<void> {
-    if (interaction.isButton() && interaction.customId === "verify_modalOpen")
-      this.handleModalVerification(interaction);
-
-    if (interaction.isButton() && interaction.customId === "verify_button") this.handleBtnVerification(interaction);
-
+    if (interaction.isButton()) {
+      if (interaction.customId === "verify_modalOpen") this.handleModalVerification(interaction);
+      if (interaction.customId === "verify_button") this.handleBtnVerification(interaction);
+    }
     if (interaction.isModalSubmit() && interaction.customId === "verify_modal") this.verifyModalCode(interaction);
 
     return;
@@ -125,13 +124,9 @@ class VerificationEvent implements IEvent {
     await interaction.showModal(modal);
   }
   private async verifyModalCode(interaction: ModalSubmitInteraction): Promise<void> {
-    const user = interaction.member as GuildMember;
-    const verify = await verifySchema.findOne({ guild_id: interaction.guildId });
     const code = interaction.fields.getTextInputValue("code");
+    const user = interaction.member as GuildMember;
     const usrCode = this.codes.get(interaction.user.id);
-
-    if (!verify?.role_id) return;
-
     if (usrCode !== code) {
       const invalidCode = new EmbedBuilder()
         .setTitle("Error")
@@ -141,6 +136,9 @@ class VerificationEvent implements IEvent {
       await interaction.reply({ embeds: [invalidCode], ephemeral: true });
       return;
     }
+    const verify = await verifySchema.findOne({ guild_id: interaction.guildId });
+
+    if (!verify?.role_id) return;
 
     const role = interaction.guild?.roles.cache.get(verify.role_id) as Discord.Role;
     user.roles.add(role);

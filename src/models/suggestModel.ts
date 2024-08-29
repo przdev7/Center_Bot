@@ -1,7 +1,10 @@
 import { model, Schema } from "mongoose";
 
-import suggestionStatus from "../utils/suggestionStatus";
-
+export enum suggestionStatus {
+  pending = "pending",
+  declined = "declined",
+  accepted = "accepted",
+}
 export interface Suggest {
   guild_id: string;
   channel_id: string;

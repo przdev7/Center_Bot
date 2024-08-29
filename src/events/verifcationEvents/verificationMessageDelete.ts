@@ -7,14 +7,7 @@ class VerificationMessageDelete implements IEvent {
   once = false;
 
   async execute(client: BotClient, msg: Interaction): Promise<void> {
-    const messagesIds = await verifySchema.find({ guild_id: msg.guild?.id });
-    for (const data of messagesIds) {
-      if (data.message_id !== msg.id) continue;
-
-      await verifySchema.deleteOne({ message_id: data.message_id }).catch((err) => {
-        console.log(err);
-      });
-    }
+    await verifySchema.findOneAndDelete({ guild_id: msg.guild?.id, message_id: msg.id });
   }
 }
 export default VerificationMessageDelete;

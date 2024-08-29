@@ -1,4 +1,5 @@
 import Discord, {
+  ChannelType,
   ChatInputCommandInteraction,
   EmbedBuilder,
   Guild,
@@ -27,6 +28,14 @@ class ChannelCommand implements ICommand {
           .setDescription("Unlocking channel")
           .addChannelOption((o) => o.setName("channel").setDescription("Select channel")),
       )
+      .addSubcommand((command) =>
+        command
+          .setName("reset")
+          .setDescription("resetting a channel.")
+          .addChannelOption((option) =>
+            option.setName("channel").setDescription("Select channel").addChannelTypes(ChannelType.GuildText),
+          ),
+      )
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels);
   }
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -37,6 +46,9 @@ class ChannelCommand implements ICommand {
         break;
       case "unlock":
         await this.unlock(interaction);
+        break;
+      case "reset":
+        await this.reset(interaction);
         break;
       default:
         await interaction.editReply({ content: "Invalid subcommand." });
@@ -84,6 +96,19 @@ class ChannelCommand implements ICommand {
     await interaction.reply({
       embeds: [embed.setTitle("Success!").setColor("Green").setDescription("Successfully unlocked channel")],
     });
+  }
+  private async reset(interaction: ChatInputCommandInteraction): Promise<void> {
+    const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
+
+    await channel.delete();
+    const newChannel = await channel.clone();
+    const embed = new EmbedBuilder()
+      .setTitle("Channel reseted")
+      .setDescription("Channel reseted! :fire: :volcano:")
+      .setColor("DarkRed")
+      .setImage("https://imgur.com/XYQCZCx.png");
+    newChannel.send({ embeds: [embed] });
+    await interaction.reply({ content: "Channel has been successfully reset", ephemeral: true }).catch(() => {});
   }
 }
 

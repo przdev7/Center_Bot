@@ -1,3 +1,4 @@
+import ms from "ms";
 import BotClient from "../client";
 import statsSchema from "../models/statsModel";
 function statistics(): void {
@@ -7,10 +8,9 @@ function statistics(): void {
       const data = await statsSchema.find();
       if (data.length > 0) {
         data.forEach((doc: { channel_id: string; guild_id: string }) => {
-          const channelId = doc.channel_id;
-          const guildId = doc.guild_id;
-          const guild = client.guilds.cache.get(guildId);
-          const channel = guild?.channels.cache.get(channelId);
+          const { channel_id, guild_id } = doc;
+          const guild = client.guilds.cache.get(guild_id);
+          const channel = guild?.channels.cache.get(channel_id);
           try {
             channel?.setName(`Members on server: ${guild?.memberCount}`);
           } catch (error) {
@@ -23,7 +23,7 @@ function statistics(): void {
     } catch (error) {
       console.error(error);
     }
-  }, 10000); // TODO: finish statistics
+  }, ms("5m")); // TODO: finish statistics
 }
 
 export default statistics;
