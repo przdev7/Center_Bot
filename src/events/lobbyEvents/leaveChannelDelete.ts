@@ -7,7 +7,7 @@ class LeaveChannelDelete implements IEvent {
   once = false;
 
   async execute(client: BotClient, channel: Interaction): Promise<void> {
-    await memberRemoveSchema.find({ guild_id: channel.guild?.id, channel_id: channel.id });
+    await memberRemoveSchema.findOneAndDelete({ guild_id: channel.guild?.id, channel_id: channel.id });
   }
 }
 export default LeaveChannelDelete;

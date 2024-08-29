@@ -22,36 +22,38 @@ class ticketManagementPanel implements IEvent {
   async execute(client: BotClient, interaction: Interaction): Promise<void> {
     if (!interaction.isButton()) return;
     if (interaction.customId.split("_")[0] !== "ticket") return;
-    const ticketModerateRoleId = await ticketModel.findOne({ guild_id: interaction.guild?.id });
-    const member = interaction.member as GuildMember;
-
     switch (interaction.customId) {
       case "ticket_del":
         await this.handleDelete(interaction);
         break;
-      default: {
-        const hasTicketRole = ticketModerateRoleId?.role_id && member.roles.cache.has(ticketModerateRoleId.role_id);
-        const isDelInteraction =
-          interaction.customId === "ticket_delDecline" || interaction.customId === "ticket_delConfirm";
-        const isAdmin = interaction.memberPermissions?.has(PermissionFlagsBits.Administrator);
-
-        if (((hasTicketRole && isDelInteraction) || isAdmin) && interaction.customId.split("_")[0] === "ticket") {
-          switch (interaction.customId) {
-            case "ticket_delDecline":
-              await this.handleDeleteDecline(interaction);
-              break;
-            case "ticket_delConfirm":
-              await this.handleDeleteConfirm(interaction);
-              break;
-            case "ticket_claim":
-              await this.handleClaim(interaction);
-              break;
-          }
-        } else {
-          await this.handleNoPermissions(interaction);
-        }
+      default:
+        await this.handlePanelInteraction(interaction);
         break;
+    }
+  }
+
+  private async handlePanelInteraction(interaction: ButtonInteraction): Promise<void> {
+    const ticketModerateRoleId = await ticketModel.findOne({ guild_id: interaction.guild?.id });
+    const member = interaction.member as GuildMember;
+    const hasTicketRole = ticketModerateRoleId?.role_id && member.roles.cache.has(ticketModerateRoleId.role_id);
+    const isDelInteraction =
+      interaction.customId === "ticket_delDecline" || interaction.customId === "ticket_delConfirm";
+    const isAdmin = interaction.memberPermissions?.has(PermissionFlagsBits.Administrator);
+
+    if (((hasTicketRole && isDelInteraction) || isAdmin) && interaction.customId.split("_")[0] === "ticket") {
+      switch (interaction.customId) {
+        case "ticket_delDecline":
+          await this.handleDeleteDecline(interaction);
+          break;
+        case "ticket_delConfirm":
+          await this.handleDeleteConfirm(interaction);
+          break;
+        case "ticket_claim":
+          await this.handleClaim(interaction);
+          break;
       }
+    } else {
+      await this.handleNoPermissions(interaction);
     }
   }
 

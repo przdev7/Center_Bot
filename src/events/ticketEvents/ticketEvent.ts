@@ -69,9 +69,9 @@ class InteractionCreateEvent implements IEvent {
           },
         ],
       })
-      .then(async (ch) => {
+      .then(async (channel) => {
         if (ticketData.role_id) {
-          ch.permissionOverwrites.create(ticketData.role_id, {
+          channel.permissionOverwrites.create(ticketData.role_id, {
             ViewChannel: true,
             ReadMessageHistory: true,
             SendMessages: true,
@@ -114,13 +114,13 @@ class InteractionCreateEvent implements IEvent {
           new ButtonBuilder().setCustomId("ticket_del").setLabel("🗑️ | Delete ticket").setStyle(ButtonStyle.Danger),
           new ButtonBuilder().setCustomId("ticket_claim").setLabel("🤝 | Claim ticket").setStyle(ButtonStyle.Success),
         );
-        await ch.send({
+        await channel.send({
           content: `${interaction.member}`,
           embeds: [embed],
         });
-        await ch.send({ embeds: [ticketManagementPanel], components: [row] });
+        await channel.send({ embeds: [ticketManagementPanel], components: [row] });
         await interaction.reply({
-          content: `> Your ticket has been created, channel -> ${ch}`,
+          content: `> Your ticket has been created, channel -> ${channel}`,
           ephemeral: true,
         });
       });
