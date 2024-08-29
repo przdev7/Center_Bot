@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import removeSchema from "../../models/memberRemoveModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 import welcomeSchema from "../../models/welcomeModel";
 class LobbyCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -91,7 +91,7 @@ class LobbyCommand implements ICommand {
         .setTitle("Error")
         .setDescription("Welcome function is already set up! If welcome messages don't send then use welcome remove.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [alreadySetup] });
       return;
     }
@@ -106,7 +106,7 @@ class LobbyCommand implements ICommand {
       .setTitle("Success")
       .setDescription("Set'uped welcome function")
       .setColor("Green")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.reply({ embeds: [embed] });
   }
   private async welcomeRemove(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -117,7 +117,7 @@ class LobbyCommand implements ICommand {
         .setTitle("Error")
         .setDescription("You didn't setup welcome function, please use welcome setup command.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [ddntSetup] });
       return;
@@ -127,7 +127,7 @@ class LobbyCommand implements ICommand {
         .setTitle("Success")
         .setDescription("Deleted channel & role? from database.")
         .setColor("Green")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [verifiyEmbed] });
     });
@@ -141,7 +141,7 @@ class LobbyCommand implements ICommand {
         .setTitle("Error")
         .setDescription("Leave function is already set up! If leave messages don't send then use leave remove.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [alreadySetup] });
       return;
     }
@@ -153,7 +153,7 @@ class LobbyCommand implements ICommand {
       .setTitle("Success")
       .setDescription("Set'uped leave function")
       .setColor("Green")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.reply({ embeds: [embed] });
   }
   private async leaveRemove(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -164,7 +164,7 @@ class LobbyCommand implements ICommand {
         .setTitle("Error")
         .setDescription("You didn't setup leave function, please use leave setup command.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [ddntSetup] });
       return;
@@ -174,7 +174,7 @@ class LobbyCommand implements ICommand {
         .setTitle("Success")
         .setDescription("Deleted channel from database.")
         .setColor("Green")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [verifiyEmbed] });
     });

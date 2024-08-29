@@ -11,7 +11,7 @@ import {
 
 import { ICommand } from "../../interfaces/ICommand";
 import statsSchema from "../../models/statsModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class StatisticsCommand implements ICommand {
   public slashCommandJSON: SlashCommandSubcommandsOnlyBuilder;
   constructor() {
@@ -49,7 +49,7 @@ class StatisticsCommand implements ICommand {
         .setTitle("Error")
         .setDescription("Statistics function is already set up! If statistics don't work then use statistics remove.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [alreadySetup] });
       return;
     }
@@ -61,7 +61,7 @@ class StatisticsCommand implements ICommand {
       .setTitle("Success")
       .setDescription("Set'uped statistics function")
       .setColor("Green")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.reply({ embeds: [embed] });
   }
   private async remove(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -72,7 +72,7 @@ class StatisticsCommand implements ICommand {
         .setTitle("Error")
         .setDescription("You didn't setup statistics function, please use statistics setup command.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [ddntSetup] });
       return;
@@ -82,7 +82,7 @@ class StatisticsCommand implements ICommand {
         .setTitle("Success")
         .setDescription("Deleted channel from database.")
         .setColor("Green")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [verifiyEmbed] });
     });

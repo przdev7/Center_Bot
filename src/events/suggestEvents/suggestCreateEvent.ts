@@ -10,9 +10,8 @@ import {
 import BotClient from "../../client";
 import formatResults from "../../functions/formatResults";
 import { IEvent } from "../../interfaces/IEvent";
-import suggestSchema from "../../models/suggestModel";
-import { BOT_VERSION } from "../../utils/constants";
-import suggestionStatus from "../../utils/suggestionStatus";
+import suggestSchema, { suggestionStatus } from "../../models/suggestModel";
+import { version } from "../../../package.json";
 class SuggestCreateEvent implements IEvent {
   name: keyof ClientEvents = "messageCreate";
   once = false;
@@ -39,7 +38,7 @@ class SuggestCreateEvent implements IEvent {
         ])
         .setColor("White")
         .setTimestamp()
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       const row = this.getButtons();
       const admnRow = this.getAdminButtons();

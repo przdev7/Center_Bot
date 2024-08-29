@@ -4,7 +4,7 @@ import { AttachmentBuilder, ClientEvents, Colors, EmbedBuilder, Guild, GuildMemb
 import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import removeSchema from "../../models/memberRemoveModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class GuildMemberRemove implements IEvent {
   name: keyof ClientEvents = "guildMemberRemove";
   once = false;
@@ -61,7 +61,7 @@ class GuildMemberRemove implements IEvent {
         .setColor(Colors.Red)
         .setImage("attachment://welcome-image.png")
         .setTimestamp()
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await channel.send({ embeds: [embed], files: [attachment] });
     } catch (err) {
       console.error(err);

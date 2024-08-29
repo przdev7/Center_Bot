@@ -6,7 +6,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 
 class KickCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -36,7 +36,7 @@ class KickCommand implements ICommand {
         .setDescription(`You were kicked by: ${interaction.user.username} for: ${reason}`)
         .setColor("Green")
         .setImage("https://imgur.com/XYQCZCx.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await user.send({ embeds: [dmEmbed] }).catch(() => {});
 
@@ -46,7 +46,7 @@ class KickCommand implements ICommand {
           .setDescription(`You kicked: <@${user.id}> For: ${reason}`)
           .setColor("Green")
           .setImage("https://imgur.com/XYQCZCx.png")
-          .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+          .setFooter({ text: `Center Bot Version: ${version}` });
         await interaction.reply({ embeds: [embed] });
       });
     } catch (error) {

@@ -17,7 +17,7 @@ import ms from "ms";
 import BotClient from "../../client";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import ticketSchema, { TicketCategory } from "../../models/ticketModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class TicketCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
@@ -151,7 +151,7 @@ class TicketCommand implements ICommand {
         .setDescription("You are currently creating ticket system")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [inCreatingTicket], ephemeral: true });
     }
@@ -163,7 +163,7 @@ class TicketCommand implements ICommand {
       .setDescription("timeout, max time for ticket system = 5min")
       .setColor("Red")
       .setImage("https://imgur.com/Dui1IzU.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     const success = new EmbedBuilder()
       .setTitle("Success")
@@ -173,7 +173,7 @@ class TicketCommand implements ICommand {
       )
       .setColor("Green")
       .setImage("https://imgur.com/Dui1IzU.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await interaction.reply({ embeds: [success] });
     setTimeout(async () => {
@@ -190,7 +190,7 @@ class TicketCommand implements ICommand {
         .setDescription("You are not creating ticket system")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [errorCanceling], ephemeral: true });
       return;
@@ -201,7 +201,7 @@ class TicketCommand implements ICommand {
       .setDescription("Successfully canceled creating ticket system")
       .setColor("Green")
       .setImage("https://imgur.com/Dui1IzU.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     state.delete(interaction.user.id);
     await interaction.reply({ embeds: [successCanceling] });
@@ -218,7 +218,7 @@ class TicketCommand implements ICommand {
         .setDescription("You are not creating ticket system")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [errorCanceling], ephemeral: true });
       return;
@@ -232,7 +232,7 @@ class TicketCommand implements ICommand {
         .setDescription("You have already used this name/description or both")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [errorCanceling], ephemeral: true });
       return;
@@ -243,7 +243,7 @@ class TicketCommand implements ICommand {
       .setDescription(`Successfully added category ${cName}`)
       .setColor("Green")
       .setImage("https://imgur.com/Dui1IzU.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await interaction.reply({ embeds: [successAdd], ephemeral: true });
   }
@@ -261,7 +261,7 @@ class TicketCommand implements ICommand {
         .setDescription("You are not creating ticket system")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [errorCanceling], ephemeral: true });
       return;
@@ -272,7 +272,7 @@ class TicketCommand implements ICommand {
         .setDescription("You haven't added roles try /ticket add")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [categoryError], ephemeral: true });
       return;
     }
@@ -303,7 +303,7 @@ class TicketCommand implements ICommand {
       .setDescription("Successfully created ticket system!")
       .setColor("Green")
       .setImage("https://imgur.com/Dui1IzU.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await ticketSchema.create({
       guild_id: interaction.guild?.id,
@@ -334,7 +334,7 @@ class TicketCommand implements ICommand {
         .setDescription("You are not creating ticket system")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [errorCanceling], ephemeral: true });
       return;
@@ -345,7 +345,7 @@ class TicketCommand implements ICommand {
         .setDescription("You haven't added roles try /ticket add")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [categoryError], ephemeral: true });
       return;
     }
@@ -355,7 +355,7 @@ class TicketCommand implements ICommand {
         .setDescription("You haven't added such a role yet")
         .setColor("Red")
         .setImage("https://imgur.com/Dui1IzU.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [roleError], ephemeral: true });
       return;
     }
@@ -367,7 +367,7 @@ class TicketCommand implements ICommand {
       .setDescription(`Successfully removed ${categoryName}`)
       .setColor("Green")
       .setImage("https://imgur.com/Dui1IzU.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await interaction.reply({ embeds: [successRemove] });
   }

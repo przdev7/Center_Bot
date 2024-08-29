@@ -12,7 +12,7 @@ import {
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import verifySchema from "../../models/verifyModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 
 interface data {
   GuildId: string;
@@ -64,7 +64,7 @@ class VerifyCommand implements ICommand {
         .setDescription("Verification is already set up!")
         .setColor("Red")
         .setImage("https://imgur.com/Uv62jPu.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [alreadySetup] });
       return;
     }
@@ -81,7 +81,7 @@ class VerifyCommand implements ICommand {
       .setDescription("Set'uped verification")
       .setColor("Green")
       .setImage("https://imgur.com/Uv62jPu.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.reply({ embeds: [embed] });
   }
 
@@ -92,7 +92,7 @@ class VerifyCommand implements ICommand {
         .setDescription("You didn't setup verification, please use verify setup command.")
         .setColor("Red")
         .setImage("https://imgur.com/Uv62jPu.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [ddntSetVerification] });
       return;
@@ -114,7 +114,7 @@ class VerifyCommand implements ICommand {
       )
       .setImage("https://imgur.com/Uv62jPu.png")
       .setColor("Green")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     const channel = interaction.guild?.channels.cache.get(this.obj.ChannelId) as TextChannel;
 
@@ -138,7 +138,7 @@ class VerifyCommand implements ICommand {
         .setDescription("You didn't setup verification, please use verify setup command.")
         .setColor("Red")
         .setImage("https://imgur.com/Uv62jPu.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [ddntSetup] });
       return;
@@ -149,7 +149,7 @@ class VerifyCommand implements ICommand {
         .setDescription("Deleted from database.")
         .setColor("Green")
         .setImage("https://imgur.com/Uv62jPu.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [verifiyEmbed] });
     });

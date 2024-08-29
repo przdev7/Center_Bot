@@ -11,7 +11,7 @@ import {
 import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import ticketSchema from "../../models/ticketModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class InteractionCreateEvent implements IEvent {
   name: keyof ClientEvents = "interactionCreate";
   once = false;
@@ -102,13 +102,13 @@ class InteractionCreateEvent implements IEvent {
               inline: false,
             },
           ])
-          .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+          .setFooter({ text: `Center Bot Version: ${version}` })
           .setTimestamp();
 
         const ticketManagementPanel = new EmbedBuilder()
           .setColor("Red")
           .setTitle("Ticket Management Panel")
-          .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+          .setFooter({ text: `Center Bot Version: ${version}` });
 
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder().setCustomId("ticket_del").setLabel("🗑️ | Delete ticket").setStyle(ButtonStyle.Danger),

@@ -1,7 +1,6 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import BotClient from "../../client";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
 import { version, dependencies } from "../../../package.json";
 class BotInfoCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -22,7 +21,7 @@ class BotInfoCommand implements ICommand {
         { name: "Bot is on", value: `${client.guilds.cache.size} servers` },
       )
       .setColor("White")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+      .setFooter({ text: `Center Bot Version: ${version}` })
       .setTimestamp()
       .setImage("https://imgur.com/XYQCZCx.png");
 

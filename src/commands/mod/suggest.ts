@@ -9,7 +9,7 @@ import {
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
 import suggestSchema from "../../models/suggestModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class SuggestCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
@@ -53,7 +53,7 @@ class SuggestCommand implements ICommand {
         .setTitle("Error")
         .setDescription("suggest channel is already set up! If suggest don't work then use suggest remove.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       await interaction.reply({ embeds: [alreadySetup] });
       return;
     }
@@ -65,7 +65,7 @@ class SuggestCommand implements ICommand {
       .setTitle("Success")
       .setDescription("Set'uped suggest channel")
       .setColor("Green")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.reply({ embeds: [embed] });
   }
   private async remove(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -75,7 +75,7 @@ class SuggestCommand implements ICommand {
         .setTitle("Error")
         .setDescription("You didn't setup suggest channel, please use /suggest setup command.")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [ddntSetup] });
       return;
@@ -85,7 +85,7 @@ class SuggestCommand implements ICommand {
         .setTitle("Success")
         .setDescription("Deleted channel from database.")
         .setColor("Green")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
 
       await interaction.reply({ embeds: [verifiyEmbed] });
     });

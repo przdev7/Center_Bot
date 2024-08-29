@@ -9,7 +9,7 @@ import Discord, {
 } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class ChannelCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
@@ -59,7 +59,7 @@ class ChannelCommand implements ICommand {
     const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
     const embed = new EmbedBuilder()
       .setImage("https://imgur.com/XYQCZCx.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     if (!channel.permissionsFor(guild?.id)?.has("SendMessages")) {
       await interaction.reply({
         embeds: [embed.setTitle("Error").setColor("Red").setDescription("Channel is already locked.")],
@@ -82,7 +82,7 @@ class ChannelCommand implements ICommand {
     }
     const embed = new Discord.EmbedBuilder()
       .setImage("https://imgur.com/XYQCZCx.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     if (channel.permissionsFor(guild?.id)?.has("SendMessages")) {
       await interaction.reply({
         embeds: [embed.setTitle("Error").setColor("Red").setDescription("Channel is already unlocked.")],

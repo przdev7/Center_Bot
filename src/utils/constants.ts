@@ -1,5 +1,3 @@
-export const BOT_VERSION = "v1.0.0";
-
 export const eightBallReply: string[] = [
   "It is certain.",
   "It is decidedly so.",

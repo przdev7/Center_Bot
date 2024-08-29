@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 
 class AvatarCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -24,7 +24,7 @@ class AvatarCommand implements ICommand {
       .setTitle("User Avatar")
       .setImage(user.avatarURL({ size: 4096 }))
       .setColor("White")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await interaction.reply({ embeds: [embedAvatar] });
   }

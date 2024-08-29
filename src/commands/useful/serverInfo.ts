@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction, EmbedBuilder, Guild, SlashCommandBuilder, 
 
 import BotClient from "../../client";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class ServerInfoCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
@@ -35,7 +35,7 @@ class ServerInfoCommand implements ICommand {
       .setColor("White")
       .setThumbnail(g.bannerURL())
       .setImage("https://imgur.com/XYQCZCx.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await interaction.reply({ embeds: [serverInfoEmbed] });
   }

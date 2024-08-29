@@ -2,9 +2,8 @@ import { ButtonInteraction, ClientEvents, Embed, EmbedBuilder, Interaction, Mess
 import BotClient from "../../client";
 import formatResults from "../../functions/formatResults";
 import { IEvent } from "../../interfaces/IEvent";
-import suggestSchema, { SuggestArray } from "../../models/suggestModel";
-import { BOT_VERSION } from "../../utils/constants";
-import suggestionStatus from "../../utils/suggestionStatus";
+import suggestSchema, { SuggestArray, suggestionStatus } from "../../models/suggestModel";
+import { version } from "../../../package.json";
 class SuggestHandleInteractions implements IEvent {
   name: keyof ClientEvents = "interactionCreate";
   once = false;
@@ -93,7 +92,7 @@ class SuggestHandleInteractions implements IEvent {
         { name: "Votes", value: formatResults(suggestion.upvotes, suggestion.downvotes) },
       ])
       .setTimestamp()
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     await interaction.editReply({ embeds: [updatedEmbed], components: components });
   }
@@ -131,7 +130,7 @@ class SuggestHandleInteractions implements IEvent {
         { name: "Votes", value: pb },
       ])
       .setTimestamp()
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.editReply({ embeds: [updatedEmbed], components: [] });
   }
   private async decline(interaction: ButtonInteraction, suggestion: SuggestArray): Promise<void> {
@@ -174,7 +173,7 @@ class SuggestHandleInteractions implements IEvent {
         { name: "Votes", value: pb },
       ])
       .setTimestamp()
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
     await interaction.editReply({ embeds: [updatedEmbed], components: [] });
   }
 }

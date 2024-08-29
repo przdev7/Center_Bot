@@ -4,7 +4,7 @@ import { AttachmentBuilder, ClientEvents, Colors, EmbedBuilder, Guild, GuildMemb
 import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import welcomeSchema from "../../models/welcomeModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class GuildMemberAdd implements IEvent {
   name: keyof ClientEvents = "guildMemberAdd";
   once = false;
@@ -63,7 +63,7 @@ class GuildMemberAdd implements IEvent {
         .setColor(Colors.Green)
         .setImage("attachment://welcome-image.png")
         .setTimestamp()
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+        .setFooter({ text: `Center Bot Version: ${version}` });
       if (channel instanceof TextChannel) {
         await channel.send({ embeds: [embed], files: [attachment] }).then(() => {
           if (role) {

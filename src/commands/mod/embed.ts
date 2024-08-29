@@ -7,7 +7,7 @@ import {
 } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class EmbedCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
 
@@ -35,7 +35,7 @@ class EmbedCommand implements ICommand {
       });
       return;
     }
-    const embed = new EmbedBuilder().setTitle(title).setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+    const embed = new EmbedBuilder().setTitle(title).setFooter({ text: `Center Bot Version: ${version}` });
     if (description) embed.setDescription(description);
     if (color) embed.setColor(color as HexColorString);
 

@@ -13,9 +13,9 @@ import {
 } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
 import { SlashCommandConfig } from "../../builders/SlashCommandConfig";
 import _ from "lodash";
+import { version } from "../../../package.json";
 class ServerListCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   public slashCommandConfig: SlashCommandConfig;
@@ -80,7 +80,7 @@ class ServerListCommand implements ICommand {
         .setTitle("Servers")
         .setDescription("All servers where the bot is located")
         .setFields(this.chunk[this.index])
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+        .setFooter({ text: `Center Bot Version: ${version}` })
         .setThumbnail(interaction.user.displayAvatarURL())
         .setImage("https://imgur.com/XYQCZCx.png");
 
@@ -151,7 +151,7 @@ class ServerListCommand implements ICommand {
           .setTitle("Servers")
           .setFields(...this.chunk[this.index])
           .setImage("https://imgur.com/XYQCZCx.png")
-          .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+          .setFooter({ text: `Center Bot Version: ${version}` })
           .setThumbnail(interaction.user.displayAvatarURL());
 
         await i.editReply({ embeds: [updatedServerlistEmbed], components: [row] });

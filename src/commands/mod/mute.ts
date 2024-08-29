@@ -7,7 +7,7 @@ import {
 } from "discord.js";
 import ms from "ms";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class MuteCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   private allowedTimeUnits: string[] = ["s", "m", "d"];
@@ -58,7 +58,7 @@ class MuteCommand implements ICommand {
           .setDescription(`You muted: <@${user.id}> For: ${reason}`)
           .setColor("Green")
           .setImage("https://imgur.com/XYQCZCx.png")
-          .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+          .setFooter({ text: `Center Bot Version: ${version}` });
         await interaction.reply({ embeds: [embed] });
       });
     } catch (error) {

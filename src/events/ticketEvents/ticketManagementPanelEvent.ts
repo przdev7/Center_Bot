@@ -13,7 +13,7 @@ import {
 import BotClient from "../../client";
 import { IEvent } from "../../interfaces/IEvent";
 import ticketModel from "../../models/ticketModel";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class ticketManagementPanel implements IEvent {
   name: keyof ClientEvents = "interactionCreate";
   once = false;
@@ -71,7 +71,7 @@ class ticketManagementPanel implements IEvent {
         .setTitle("You already sended Request")
         .setDescription("your request has already been sent")
         .setColor("Red")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+        .setFooter({ text: `Center Bot Version: ${version}` })
         .setTimestamp();
 
       await interaction.reply({ embeds: [youSendedRequest], ephemeral: true });
@@ -82,7 +82,7 @@ class ticketManagementPanel implements IEvent {
       .setTitle("Delete ticket request")
       .setDescription(` Deleting requested by <@${interaction.user.id}>`)
       .setColor("Red")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+      .setFooter({ text: `Center Bot Version: ${version}` })
       .setTimestamp();
 
     const button = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -99,7 +99,7 @@ class ticketManagementPanel implements IEvent {
       .setTitle("Your ticket will be deleted in 10 seconds!")
       .setDescription(`Accepted by <@${interaction.user.id}>`)
       .setColor("Green")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+      .setFooter({ text: `Center Bot Version: ${version}` })
       .setTimestamp();
 
     await interaction.editReply({ embeds: [confirmedEmbed], components: [] }).then(() => {
@@ -115,7 +115,7 @@ class ticketManagementPanel implements IEvent {
       .setTitle("Your ticket won't be deleted")
       .setDescription(`Declined by <@${interaction.user.id}>`)
       .setColor("Red")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+      .setFooter({ text: `Center Bot Version: ${version}` })
       .setTimestamp();
     this.hasSendedReq = false;
     await interaction.editReply({ embeds: [declineEmbed], components: [] });
@@ -126,7 +126,7 @@ class ticketManagementPanel implements IEvent {
       .setTitle("You don't have permissions to do this!")
       .setDescription(`denied for <@${interaction.user.id}>`)
       .setColor("Red")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+      .setFooter({ text: `Center Bot Version: ${version}` })
       .setTimestamp();
     this.hasSendedReq = false;
     await interaction.editReply({ embeds: [declineEmbed], components: [] });

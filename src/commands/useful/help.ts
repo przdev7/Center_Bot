@@ -11,7 +11,7 @@ import {
 
 import BotClient from "../../client";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 import _ from "lodash";
 class HelpCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
@@ -43,7 +43,7 @@ class HelpCommand implements ICommand {
       .addFields(this.chunk[this.index])
       .setTimestamp()
       .setImage("https://imgur.com/XYQCZCx.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}`, iconURL: interaction.user.displayAvatarURL() });
+      .setFooter({ text: `Center Bot Version: ${version}`, iconURL: interaction.user.displayAvatarURL() });
     const row = this.getButtons();
     const [first, previous, pageCount, next, last] = row.components;
     const msg = await interaction.editReply({
@@ -85,7 +85,7 @@ class HelpCommand implements ICommand {
         .addFields(...this.chunk[this.index])
         .setTimestamp()
         .setImage("https://imgur.com/XYQCZCx.png")
-        .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` })
+        .setFooter({ text: `Center Bot Version: ${version}` })
         .setThumbnail(interaction.user.displayAvatarURL());
 
       await i.editReply({ embeds: [updatedHelpEmbed], components: [row] });

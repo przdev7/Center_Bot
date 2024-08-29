@@ -1,7 +1,7 @@
 import Discord, { ButtonBuilder, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
-import { BOT_VERSION } from "../../utils/constants";
+import { version } from "../../../package.json";
 class PingCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
@@ -15,7 +15,7 @@ class PingCommand implements ICommand {
       )
       .setColor("White")
       .setImage("https://imgur.com/XYQCZCx.png")
-      .setFooter({ text: `Center Bot Version: ${BOT_VERSION}` });
+      .setFooter({ text: `Center Bot Version: ${version}` });
 
     const row = new Discord.ActionRowBuilder<ButtonBuilder>().addComponents(
       new Discord.ButtonBuilder()
