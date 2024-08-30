@@ -84,37 +84,8 @@ class ServerListCommand implements ICommand {
         .setThumbnail(interaction.user.displayAvatarURL())
         .setImage("https://imgur.com/XYQCZCx.png");
 
-      const first = new ButtonBuilder()
-        .setCustomId("serverlist_first")
-        .setEmoji("⏪")
-        .setStyle(ButtonStyle.Success)
-        .setDisabled(this.index === 0);
-
-      const previous = new ButtonBuilder()
-        .setCustomId("serverlist_previous")
-        .setEmoji("⬅️")
-        .setStyle(ButtonStyle.Success)
-        .setDisabled(this.index <= 0);
-
-      const pageCount = new ButtonBuilder()
-        .setCustomId("serverlist_count")
-        .setLabel(`${this.index + 1}/${this.chunk.length}`)
-        .setStyle(ButtonStyle.Secondary)
-        .setDisabled(true);
-
-      const next = new ButtonBuilder()
-        .setCustomId("serverlist_next")
-        .setEmoji("➡️")
-        .setStyle(ButtonStyle.Success)
-        .setDisabled(this.index >= this.chunk.length - 1);
-
-      const last = new ButtonBuilder()
-        .setCustomId("serverlist_last")
-        .setEmoji("⏩")
-        .setStyle(ButtonStyle.Success)
-        .setDisabled(this.index === this.chunk.length - 1);
-
-      const row = new ActionRowBuilder<ButtonBuilder>().addComponents(first, previous, pageCount, next, last);
+      const row = this.getButtons();
+      const [first, previous, pageCount, next, last] = row.components;
 
       const msg = await interaction.reply({ embeds: [embed], components: [row], ephemeral: true });
 
@@ -226,6 +197,39 @@ class ServerListCommand implements ICommand {
       ]);
 
     await interaction.reply({ embeds: [succesEmbed], ephemeral: true });
+  }
+  private getButtons(): ActionRowBuilder<ButtonBuilder> {
+    const first = new ButtonBuilder()
+      .setCustomId("serverlist_first")
+      .setEmoji("⏪")
+      .setStyle(ButtonStyle.Success)
+      .setDisabled(this.index === 0);
+
+    const previous = new ButtonBuilder()
+      .setCustomId("serverlist_previous")
+      .setEmoji("⬅️")
+      .setStyle(ButtonStyle.Success)
+      .setDisabled(this.index <= 0);
+
+    const pageCount = new ButtonBuilder()
+      .setCustomId("serverlist_count")
+      .setLabel(`${this.index + 1}/${this.chunk.length}`)
+      .setStyle(ButtonStyle.Secondary)
+      .setDisabled(true);
+
+    const next = new ButtonBuilder()
+      .setCustomId("serverlist_next")
+      .setEmoji("➡️")
+      .setStyle(ButtonStyle.Success)
+      .setDisabled(this.index >= this.chunk.length - 1);
+
+    const last = new ButtonBuilder()
+      .setCustomId("serverlist_last")
+      .setEmoji("⏩")
+      .setStyle(ButtonStyle.Success)
+      .setDisabled(this.index === this.chunk.length - 1);
+
+    return new ActionRowBuilder<ButtonBuilder>().addComponents(first, previous, pageCount, next, last);
   }
 }
 export default ServerListCommand;

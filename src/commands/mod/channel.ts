@@ -76,10 +76,7 @@ class ChannelCommand implements ICommand {
   }
   private async unlock(interaction: ChatInputCommandInteraction): Promise<void> {
     const guild = interaction.guild as Guild;
-    let channel = interaction.options.getChannel("channel") as TextChannel | null;
-    if (!channel || channel === null) {
-      channel = interaction.channel as TextChannel;
-    }
+    const channel = (interaction.options.getChannel("channel") as TextChannel) || (interaction.channel as TextChannel);
     const embed = new Discord.EmbedBuilder()
       .setImage("https://imgur.com/XYQCZCx.png")
       .setFooter({ text: `Center Bot Version: ${version}` });
@@ -89,7 +86,7 @@ class ChannelCommand implements ICommand {
       });
       return;
     }
-    channel.permissionOverwrites.edit(guild?.id, {
+    await channel.permissionOverwrites.edit(guild?.id, {
       SendMessages: true,
     });
 
@@ -107,7 +104,7 @@ class ChannelCommand implements ICommand {
       .setDescription("Channel reseted! :fire: :volcano:")
       .setColor("DarkRed")
       .setImage("https://imgur.com/XYQCZCx.png");
-    newChannel.send({ embeds: [embed] });
+    await newChannel.send({ embeds: [embed] });
     await interaction.reply({ content: "Channel has been successfully reset", ephemeral: true }).catch(() => {});
   }
 }

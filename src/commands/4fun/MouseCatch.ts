@@ -22,14 +22,14 @@ class MouseCatchCommand implements ICommand {
       .addSubcommand((command) => command.setName("normal-mode").setDescription("Normal mode of the command"))
       .addSubcommand((command) => command.setName("advanced-mode").setDescription("Advanced mode of the command"))
       .setDescription("Test your reflexes by catching the mouse.");
-    this.slashCommandConfig = new SlashCommandConfig();
+    this.slashCommandConfig = new SlashCommandConfig().setGuildCooldown(10000);
   }
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const subCommand = interaction.options.getSubcommand();
     subCommand === "normal-mode"
-      ? await this.startGame(interaction, 5000, false)
-      : await this.startGame(interaction, 10000, true);
+      ? await this.startGame(interaction, 2000, false)
+      : await this.startGame(interaction, 5000, true);
   }
   private async startGame(
     interaction: ChatInputCommandInteraction,

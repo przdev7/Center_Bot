@@ -36,8 +36,7 @@ class HackCommand implements ICommand {
 
     let errorOccurred = false;
 
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < messages.length; i++) {
+    for (let i = 0; i < messages.length; i += 1) {
       setTimeout(async () => {
         try {
           await reply.edit(messages[i]);
