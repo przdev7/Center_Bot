@@ -141,7 +141,7 @@ class VerificationEvent implements IEvent {
     if (!verify?.role_id) return;
 
     const role = interaction.guild?.roles.cache.get(verify.role_id) as Discord.Role;
-    user.roles.add(role);
+    await user.roles.add(role);
     const succesModel = new EmbedBuilder()
       .setTitle("Success")
       .setDescription(`Added Role ${role}`)
@@ -155,7 +155,7 @@ class VerificationEvent implements IEvent {
     }
     if (dataWelcome.role_id) {
       const roleNotVerify = dataWelcome.role_id;
-      user.roles.remove(roleNotVerify);
+      await user.roles.remove(roleNotVerify);
       return;
     }
     return;

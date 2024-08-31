@@ -44,7 +44,7 @@ class SuggestCreateEvent implements IEvent {
       const admnRow = this.getAdminButtons();
 
       const msg = await suggestChannel.send({ embeds: [embed], components: [row, admnRow] });
-      msg.startThread({
+      await msg.startThread({
         name: `Suggestion user ${author.username}`,
       });
       suggestionsData.suggestions.push({
