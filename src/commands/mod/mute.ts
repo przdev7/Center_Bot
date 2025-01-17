@@ -43,6 +43,7 @@ class MuteCommand implements ICommand {
       }
       if (parseFloat(time) > 28) {
         await interaction.reply({ content: "Invalid time max = 28days", ephemeral: true });
+        return;
       }
 
       if (!this.allowedTimeUnits.includes(unit.toLocaleLowerCase(interaction.locale))) {

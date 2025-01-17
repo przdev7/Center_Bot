@@ -11,7 +11,7 @@ class PingCommand implements ICommand {
     const embed = new Discord.EmbedBuilder()
       .setTitle("Add bot")
       .setURL(
-        "https://discord.com/oauth2/authorize?client_id=1246864538050232330&permissions=364870364415&integration_type=0&scope=bot",
+        `https://discord.com/oauth2/authorize?client_id=${process.env.BOT_ID}&permissions=364870364415&integration_type=0&scope=bot`,
       )
       .setColor("White")
       .setImage("https://imgur.com/XYQCZCx.png")
@@ -23,7 +23,7 @@ class PingCommand implements ICommand {
         .setStyle(Discord.ButtonStyle.Link)
         .setEmoji("➡️")
         .setURL(
-          "https://discord.com/oauth2/authorize?client_id=1246864538050232330&permissions=364870364415&integration_type=0&scope=bot",
+          `https://discord.com/oauth2/authorize?client_id=${process.env.BOT_ID}&permissions=364870364415&integration_type=0&scope=bot`,
         ),
     );
 

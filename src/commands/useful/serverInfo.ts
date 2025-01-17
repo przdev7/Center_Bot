@@ -9,31 +9,31 @@ class ServerInfoCommand implements ICommand {
     this.slashCommandJSON = new SlashCommandBuilder().setName("serverinfo").setDescription("Sending info about user");
   }
   async execute(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
-    const g = interaction.guild as Guild;
-    const gOwnerId: string = g.ownerId;
-    const gOwner = client.users.cache.get(gOwnerId) as User;
+    const guild = interaction.guild as Guild;
+    const guildOwnerId: string = guild.ownerId;
+    const guildOwner = client.users.cache.get(guildOwnerId) as User;
     const serverInfoEmbed = new EmbedBuilder()
       .setTitle("Server Info")
       .setDescription("Info about this server")
       .addFields([
         {
           name: "Server Name:",
-          value: g.name,
+          value: guild.name,
           inline: false,
         },
         {
           name: "Server Owner:",
-          value: gOwner.username,
+          value: guildOwner.username,
           inline: false,
         },
         {
           name: "Server Created Time",
-          value: `<t:${Math.floor(g.createdTimestamp / 1000)}:R>`,
+          value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:R>`,
           inline: false,
         },
       ])
       .setColor("White")
-      .setThumbnail(g.bannerURL())
+      .setThumbnail(guild.bannerURL())
       .setImage("https://imgur.com/XYQCZCx.png")
       .setFooter({ text: `Center Bot Version: ${version}` });
 

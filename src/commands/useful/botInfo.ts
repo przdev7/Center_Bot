@@ -13,7 +13,7 @@ class BotInfoCommand implements ICommand {
     const infoEmbed = new EmbedBuilder()
       .setTitle("Informations about bot")
       .addFields(
-        { name: "Authors", value: "xczur3k & torenn. & ativ3k" },
+        { name: "Authors", value: "xczur3k & torenszef & ativ3k" },
         { name: "Date of first line of code", value: "<t:1717689600>" },
         { name: "Actual version", value: `discord.js@${dependencies["discord.js"]}` },
         { name: "Programming language", value: "TypeScript" },

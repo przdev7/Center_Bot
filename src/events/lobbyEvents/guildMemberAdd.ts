@@ -65,9 +65,9 @@ class GuildMemberAdd implements IEvent {
         .setTimestamp()
         .setFooter({ text: `Center Bot Version: ${version}` });
       if (channel instanceof TextChannel) {
-        await channel.send({ embeds: [embed], files: [attachment] }).then(() => {
+        await channel.send({ embeds: [embed], files: [attachment] }).then(async () => {
           if (role) {
-            member.roles.add(role);
+            await member.roles.add(role);
           }
         });
       }

@@ -17,13 +17,14 @@ import { version } from "../../../package.json";
 interface data {
   GuildId: string;
   RoleId: string;
-  messageId: string;
+  MessageId: string;
   ChannelId: string;
 }
 
 class VerifyCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   private obj: data | null;
+
   constructor() {
     this.slashCommandJSON = new SlashCommandBuilder()
       .setName("verify")
@@ -44,6 +45,7 @@ class VerifyCommand implements ICommand {
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
     this.obj = null;
   }
+
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const subCommand = interaction.options.getSubcommand();
 
@@ -71,7 +73,7 @@ class VerifyCommand implements ICommand {
     const data: data = {
       GuildId: guild.id,
       RoleId: verifiedRole.id,
-      messageId: "",
+      MessageId: "",
       ChannelId: channel.id,
     };
 
@@ -129,18 +131,19 @@ class VerifyCommand implements ICommand {
 
     await interaction.reply("verification has been sended");
   }
+
   private async remove(interaction: ChatInputCommandInteraction): Promise<void> {
     const guildId = interaction.guild?.id;
     const existingData = await verifySchema.findOne({ guild_id: guildId });
     if (!existingData) {
-      const ddntSetup = new EmbedBuilder()
+      const didntSetup = new EmbedBuilder()
         .setTitle("Error")
         .setDescription("You didn't setup verification, please use verify setup command.")
         .setColor("Red")
         .setImage("https://imgur.com/Uv62jPu.png")
         .setFooter({ text: `Center Bot Version: ${version}` });
 
-      await interaction.reply({ embeds: [ddntSetup] });
+      await interaction.reply({ embeds: [didntSetup] });
       return;
     }
     await verifySchema.deleteOne({ guild_id: guildId }).then(async () => {
