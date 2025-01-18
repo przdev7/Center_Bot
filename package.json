@@ -25,6 +25,7 @@
     "@types/node": "^20.14.10",
     "@types/rest": "^1.3.34",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "discord-gamecord": "^4.4.2",
     "eslint": "^9.7.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
