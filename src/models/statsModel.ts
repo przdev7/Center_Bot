@@ -4,6 +4,7 @@ const statsSchema = new Schema(
   {
     guild_id: { type: String, required: [true, "guild_id is required"] },
     channel_id: { type: String, required: [true, "channel_id is required"] },
+    format: { type: String, required: [true, "format is required"] },
   },
   { collection: "stats" },
 );

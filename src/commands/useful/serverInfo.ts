@@ -6,7 +6,7 @@ import { version } from "../../../package.json";
 class ServerInfoCommand implements ICommand {
   public slashCommandJSON: SlashCommandJSON;
   constructor() {
-    this.slashCommandJSON = new SlashCommandBuilder().setName("serverinfo").setDescription("Sending info about user");
+    this.slashCommandJSON = new SlashCommandBuilder().setName("serverinfo").setDescription("Sending info about server");
   }
   async execute(interaction: ChatInputCommandInteraction, client: BotClient): Promise<void> {
     const guild = interaction.guild as Guild;

@@ -6,6 +6,7 @@ import { ICommand } from "./interfaces/ICommand";
 import Database from "./utils/database";
 import { ProcessErrorHandler } from "./handlers/processError";
 import validateEnv from "./functions/validateEnv";
+import statistics from "./functions/statistics";
 
 class BotClient extends Client {
   private static Instance: BotClient;
@@ -60,6 +61,7 @@ class BotClient extends Client {
         this.commandHandler.handleCommands(),
         this.eventHandler.handleEvents(),
         this.db.connectToDB(),
+        statistics(),
       ]);
       await this.login(process.env.TOKEN);
     } catch (err) {
