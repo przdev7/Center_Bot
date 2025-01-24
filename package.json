@@ -20,6 +20,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.7.0",
+    "@types/ascii-art": "^1.4.3",
+    "@types/figlet": "^1.7.0",
     "@types/lodash": "^4.17.7",
     "@types/ms": "^0.7.34",
     "@types/node": "^20.14.10",
@@ -43,6 +45,7 @@
     "chalk": "^2.4.1",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
+    "figlet": "^1.8.0",
     "grapheme-splitter": "^1.0.4",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",

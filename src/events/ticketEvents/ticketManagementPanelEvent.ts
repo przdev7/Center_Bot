@@ -59,7 +59,8 @@ class ticketManagementPanel implements IEvent {
 
   private async handleClaim(interaction: ButtonInteraction): Promise<void> {
     if (interaction.customId === "ticket_claim") {
-      await interaction.channel?.send(`Ticket has been claimed by <@${interaction.user.id}>`).then((msgtopin) => {
+      const textChannel = interaction.channel as TextChannel;
+      await textChannel.send(`Ticket has been claimed by <@${interaction.user.id}>`).then((msgtopin) => {
         msgtopin.pin();
       });
       await interaction.reply({ content: "You claimed ticket", ephemeral: true });

@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, TextChannel } from "discord.js";
 import ms from "ms";
 
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
@@ -43,7 +43,8 @@ class HackCommand implements ICommand {
         } catch (e) {
           if (!errorOccurred) {
             errorOccurred = true;
-            interaction.channel?.send("You deleted the message or something went wrong.");
+            const textChannel = interaction.channel as TextChannel;
+            textChannel.send("You deleted the message or something went wrong.");
           }
         }
       }, delays[i]);

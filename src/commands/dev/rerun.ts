@@ -5,6 +5,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  TextChannel,
 } from "discord.js";
 import { SlashCommandConfig } from "../../builders/SlashCommandConfig";
 import { ICommand, SlashCommandJSON } from "../../interfaces/ICommand";
@@ -33,8 +34,8 @@ class RerunCommand implements ICommand {
         .setEmoji("⚡")
         .setStyle(ButtonStyle.Success),
     );
-
-    interaction.channel?.send({ embeds: [embed], components: [row] });
+    const textChannel = interaction.channel as TextChannel;
+    textChannel.send({ embeds: [embed], components: [row] });
     interaction.reply({ content: "Sent!", ephemeral: true });
   }
 }
