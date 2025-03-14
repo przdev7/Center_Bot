@@ -21,7 +21,14 @@ export class ProcessErrorHandler {
   private async handleWarning(warning: Error): Promise<void> {
     console.warn(`Warning: ${warning.name} - ${warning.message}`);
     console.warn(warning.stack);
-    await this.sendErrorLog("warning", warning, "https://nodejs.org/api/process.html#event-warning", [255, 255, 0]);
+
+    const warningDetails = inspect(warning, { depth: 2 });
+    await this.sendErrorLog(
+      "warning",
+      warningDetails,
+      "https://nodejs.org/api/process.html#event-warning",
+      [255, 255, 0],
+    );
   }
 
   private async handleUncaughtExceptionMonitor(error: Error): Promise<void> {
