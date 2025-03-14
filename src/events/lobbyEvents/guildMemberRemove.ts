@@ -1,0 +1,72 @@
+import Canvas, { loadImage } from "canvas";
+import { AttachmentBuilder, ClientEvents, Colors, EmbedBuilder, Guild, GuildMember, TextChannel } from "discord.js";
+
+import BotClient from "../../client";
+import { IEvent } from "../../interfaces/IEvent";
+import removeSchema from "../../models/memberRemoveModel";
+import { version } from "../../../package.json";
+class GuildMemberRemove implements IEvent {
+  name: keyof ClientEvents = "guildMemberRemove";
+  once = false;
+
+  async execute(client: BotClient, member: GuildMember): Promise<void> {
+    const guild = member.guild as Guild;
+    const guildId: string = guild?.id;
+    try {
+      const data = await removeSchema.findOne({ guild_id: guildId });
+      if (!data || !data.channel_id) {
+        return;
+      }
+      const channel = client.channels.cache.get(data?.channel_id) as TextChannel;
+      if (!channel) {
+        return;
+      }
+      const canvas = Canvas.createCanvas(700, 250);
+      const context = canvas.getContext("2d");
+
+      const background = await loadImage("https://imgur.com/quToDFm.png");
+      context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+      context.strokeStyle = "#000000";
+      context.strokeRect(0, 0, canvas.width, canvas.height);
+
+      context.font = "28px sans-serif";
+      context.fillStyle = "#ffffff";
+      context.fillText("Goodbye!", canvas.width / 2.5, canvas.height / 3.5);
+
+      context.font = "22px sans-serif";
+      context.fillStyle = "#ffffff";
+      context.fillText(member.user.username, canvas.width / 2.5, canvas.height / 1.8);
+
+      context.font = "16px sans-serif";
+      context.fillStyle = "#ffffff";
+      context.fillText(`Goodbye ${member.guild.name}`, canvas.width / 2.5, canvas.height / 1.2);
+
+      context.font = "16px sans-serif";
+      context.fillStyle = "#ffffff";
+      context.fillText(`– ${member.guild.memberCount}th member!`, canvas.width / 2.5, canvas.height / 1.1);
+
+      context.beginPath();
+      context.arc(125, 125, 100, 0, Math.PI * 2, true);
+      context.closePath();
+      context.clip();
+
+      const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: "jpg" }));
+      context.drawImage(avatar, 25, 25, 200, 200);
+
+      const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "welcome-image.png" });
+
+      const embed = new EmbedBuilder()
+        .setTitle("👋 A user leaved Server!")
+        .setColor(Colors.Red)
+        .setImage("attachment://welcome-image.png")
+        .setTimestamp()
+        .setFooter({ text: `Center Bot Version: ${version}` });
+      await channel.send({ embeds: [embed], files: [attachment] });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+}
+
+export default GuildMemberRemove;
